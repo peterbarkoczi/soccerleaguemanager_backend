@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Team {
+public class Teams {
 
     @Id
     @GeneratedValue
