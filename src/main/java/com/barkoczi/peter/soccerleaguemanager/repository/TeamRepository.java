@@ -1,7 +1,11 @@
 package com.barkoczi.peter.soccerleaguemanager.repository;
 
-import com.barkoczi.peter.soccerleaguemanager.entity.Teams;
+import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TeamRepository extends JpaRepository<Teams, Long> {
+import java.util.Set;
+
+public interface TeamRepository extends JpaRepository<Team, Long> {
+
+    Set<Team> findTeamsByLocation_Id(Long id);
 }
