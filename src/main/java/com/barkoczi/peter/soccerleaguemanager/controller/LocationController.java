@@ -18,13 +18,13 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping("/liga/list")
+    @GetMapping("/location/list")
     public List<Location> leagueList() {
         return locationRepository.findAll();
     }
 
     @PostMapping("/location/add_location")
     public Location addNewLocation(@RequestBody Location location) {
-        return locationService.addNewLocation(location);
+        return locationService.createAndSaveNewLocation(location);
     }
 }

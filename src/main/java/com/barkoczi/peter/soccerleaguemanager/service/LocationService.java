@@ -21,7 +21,7 @@ public class LocationService {
     @Autowired
     LocationRepository locationRepository;
 
-    public Location addNewLocation(Location location) {
+    public Location createAndSaveNewLocation(Location location) {
         Location newLocation = Location.builder()
                 .name(location.getName())
                 .leagues(new ArrayList<>())
