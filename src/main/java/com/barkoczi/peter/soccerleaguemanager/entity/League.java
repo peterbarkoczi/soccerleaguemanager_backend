@@ -25,11 +25,11 @@ public class League {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Location location;
 
     @Builder.Default
-    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "league")
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "league")
     private List<Team> teams = new ArrayList<>();
 
 }
