@@ -1,10 +1,9 @@
 package com.barkoczi.peter.soccerleaguemanager.service;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.League;
-import com.barkoczi.peter.soccerleaguemanager.entity.Location;
 import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import com.barkoczi.peter.soccerleaguemanager.model.TeamDetails;
-import com.barkoczi.peter.soccerleaguemanager.repository.LeaguesRepository;
+import com.barkoczi.peter.soccerleaguemanager.repository.LeagueRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.LocationRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.TeamRepository;
 import lombok.AllArgsConstructor;
@@ -29,7 +28,7 @@ public class TeamService {
     LocationRepository locationRepository;
 
     @Autowired
-    LeaguesRepository leaguesRepository;
+    LeagueRepository leagueRepository;
 
     @Autowired
     TeamDetails teamDetails;
@@ -39,7 +38,7 @@ public class TeamService {
     }
 
     private Team createAndSaveNewTeam(TeamDetails teamDetails) {
-        League league = leaguesRepository.findFirstByName(teamDetails.getLeagueName());
+        League league = leagueRepository.findFirstByName(teamDetails.getLeagueName());
         List<League> leagues = new ArrayList<>();
         leagues.add(league);
         Team newTeam = Team.builder()
