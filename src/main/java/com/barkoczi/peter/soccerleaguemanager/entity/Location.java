@@ -29,6 +29,10 @@ public class Location {
     private List<League> leagues = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "location")
+    private Set<Cup> cups;
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "location")
     private Set<Team> teams;
+
 
 }
