@@ -12,8 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "league")
-public class League {
+@Table(name = "cup")
+public class Cup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -22,14 +22,15 @@ public class League {
     @Column(nullable = false, unique = true)
     private String name;
 
+    private String date;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Location location;
 
-    @Builder.Default
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "league")
-    private List<Team> teams = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "cup")
+    private List<Match> matches = new ArrayList<>();
 
 }
