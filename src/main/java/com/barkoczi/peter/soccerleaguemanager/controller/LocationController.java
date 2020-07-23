@@ -25,6 +25,6 @@ public class LocationController {
 
     @PostMapping("/location/add_location")
     public Location addNewLocation(@RequestBody Location location) {
-        return locationService.addNewLocation(location);
+        return locationService.createAndSaveNewLocation(location);
     }
 }
