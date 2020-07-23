@@ -18,7 +18,7 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping("/liga/list")
+    @GetMapping("/location/list")
     public List<Location> leagueList() {
         return locationRepository.findAll();
     }
