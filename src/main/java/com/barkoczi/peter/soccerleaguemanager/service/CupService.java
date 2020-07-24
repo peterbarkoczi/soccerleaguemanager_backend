@@ -33,9 +33,9 @@ public class CupService {
                 .location(locationRepository.findFirstById(cupDetails.getLocationId()))
                 .build();
          cupRepository.saveAndFlush(newCup);
-//
-//         Cup cup = cupRepository.findCupByName(cupDetails.getName());
-//         cup.setMatches(matchService.createMatches(cupDetails.getTeamList(), newCup));
+
+         Cup cup = cupRepository.findCupByName(cupDetails.getName());
+         cup.setMatches(matchService.createMatches(cupDetails.getTeamList(), newCup));
 
         return newCup;
     }
