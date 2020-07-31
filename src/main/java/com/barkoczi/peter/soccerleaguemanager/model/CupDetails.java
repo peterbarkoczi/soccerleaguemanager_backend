@@ -20,6 +20,7 @@ public class CupDetails {
     private List<String> teamList;
     private String date;
     private String startTime;
+    private String matchTime;
     private Long locationId;
 
 }
