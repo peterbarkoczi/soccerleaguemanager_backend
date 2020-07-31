@@ -21,6 +21,25 @@ public class Match {
     private String team1;
     private String team2;
 
+    @Column(name = "score1", columnDefinition = "integer default 0")
+    private Integer score1 = 0;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer score2 = 0;
+
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String scorer1 = "";
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String scorer2 = "";
+
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String card1 = "";
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String card2 = "";
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean isFinished = false;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore
