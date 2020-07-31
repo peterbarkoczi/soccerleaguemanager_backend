@@ -35,7 +35,11 @@ public class CupService {
          cupRepository.saveAndFlush(newCup);
 
          Cup cup = cupRepository.findCupByName(cupDetails.getName());
-         cup.setMatches(matchService.createMatches(cupDetails.getTeamList(), newCup));
+         cup.setMatches(matchService.createMatches(
+                 cupDetails.getTeamList(),
+                 newCup,
+                 cupDetails.getStartTime(),
+                 cupDetails.getMatchTime()));
 
         return newCup;
     }
