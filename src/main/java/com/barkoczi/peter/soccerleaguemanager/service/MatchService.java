@@ -8,10 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -37,6 +37,13 @@ public class MatchService {
                     .time(df.format(time.getTime()))
                     .team1(temp.get(0))
                     .team2(temp.get(1))
+                    .score1(0)
+                    .score2(0)
+                    .scorer1("")
+                    .scorer2("")
+                    .card1("")
+                    .card2("")
+                    .isFinished(false)
                     .build();
             matches.add(newMatch);
             deleteTeams(teamsList, temp);
