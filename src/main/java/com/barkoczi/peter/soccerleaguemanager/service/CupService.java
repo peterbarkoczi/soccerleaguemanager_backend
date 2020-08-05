@@ -46,4 +46,8 @@ public class CupService {
 
         return newCup;
     }
+
+    public void deleteCup(Long id) {
+        cupRepository.delete(cupRepository.findCupById(id));
+    }
 }
