@@ -22,23 +22,26 @@ public class Match {
     private String team2;
 
     @Column(name = "score1", columnDefinition = "integer default 0")
-    private Integer score1 = 0;
+    private Integer score1;
 
     @Column(columnDefinition = "integer default 0")
-    private Integer score2 = 0;
+    private Integer score2;
 
     @Column(columnDefinition = "varchar(255) default ''")
-    private String scorer1 = "";
+    private String scorer1;
     @Column(columnDefinition = "varchar(255) default ''")
-    private String scorer2 = "";
+    private String scorer2;
 
     @Column(columnDefinition = "varchar(255) default ''")
-    private String card1 = "";
+    private String card1;
     @Column(columnDefinition = "varchar(255) default ''")
-    private String card2 = "";
+    private String card2;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean isFinished = false;
+    private boolean finished = false;
+
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String matchType;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

@@ -2,6 +2,7 @@ package com.barkoczi.peter.soccerleaguemanager.service;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Cup;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
+import com.barkoczi.peter.soccerleaguemanager.repository.CupRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Data
 @NoArgsConstructor
@@ -22,16 +25,33 @@ public class MatchService {
     @Autowired
     private MatchRepository matchRepository;
 
-    public List<Match> createMatches(List<String> teamsList, Cup cup, String startTime, String matchTime) {
+    @Autowired
+    private CupRepository cupRepository;
+
+
+    public List<Match> createQualifierMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
+        return createMatches(teamsList, cup, startTime, matchTime, matchType);
+    }
+
+    private List<Match> createMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
 
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 
         List<String> temp;
         Calendar time = setTime(startTime);
         List<Match> matches = new ArrayList<>();
+        int range = teamsList.size() / 2;
 
-        for (int i = 0; i < 4; i++) {
-            temp = getRandomElement(teamsList);
+        if (matchType.equals("sf") || matchType.equals("f")) {
+            time.add(Calendar.MINUTE, Integer.parseInt(matchTime) + 10);
+        }
+
+        for (int i = 0; i < range; i++) {
+            if (matchType.equals("q")) {
+                temp = getRandomTeams(teamsList);
+            } else {
+                temp = getFirstTwoTeams(teamsList);
+            }
             Match newMatch = Match.builder()
                     .cup(cup)
                     .time(df.format(time.getTime()))
@@ -43,7 +63,8 @@ public class MatchService {
                     .scorer2("")
                     .card1("")
                     .card2("")
-                    .isFinished(false)
+                    .finished(false)
+                    .matchType(matchType)
                     .build();
             matches.add(newMatch);
             deleteTeams(teamsList, temp);
@@ -55,7 +76,7 @@ public class MatchService {
         return matches;
     }
 
-    private List<String> getRandomElement(List<String> list) {
+    private List<String> getRandomTeams(List<String> list) {
 
         Random random = new Random();
         List<String> teams = new ArrayList<>();
@@ -70,6 +91,15 @@ public class MatchService {
         return teams;
     }
 
+    private List<String> getFirstTwoTeams(List<String> teamList) {
+        List<String> teams = new ArrayList<>();
+
+        teams.add(teamList.get(0));
+        teams.add(teamList.get(1));
+
+        return teams;
+    }
+
     private void deleteTeams(List<String> list, List<String> temp) {
         for (String item : temp) {
             list.remove(item);
@@ -77,12 +107,10 @@ public class MatchService {
     }
 
     private Calendar setTime(String startTime) {
-
-        String[] splittedTime = startTime.split(":");
+        String[] splitTime = startTime.split(":");
         Calendar time = Calendar.getInstance();
-        time.set(Calendar.HOUR, Integer.parseInt(splittedTime[0]));
-        time.set(Calendar.MINUTE, Integer.parseInt(splittedTime[1]));
-
+        time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(splitTime[0].replaceAll("\\s+","")));
+        time.set(Calendar.MINUTE, Integer.parseInt(splitTime[1].replaceAll("\\s+","")));
         return time;
     }
 
@@ -93,10 +121,68 @@ public class MatchService {
             scorer = matchRepository.findFirstById(match.getId()).getScorer1();
             scorer += match.getScorer1() + "\r\n";
             matchRepository.updateScore1(match.getScore1(), scorer, match.getId());
-        } else if (match.getScore2() != null){
+        } else if (match.getScore2() != null) {
             scorer = matchRepository.findFirstById(match.getId()).getScorer2();
             scorer += match.getScorer2() + "\r\n";
             matchRepository.updateScore2(match.getScore2(), scorer, match.getId());
+        }
+    }
+
+    @Transactional
+    public void setFinished(Match match) {
+        matchRepository.updateFinished(match.getId());
+    }
+
+    public List<Match> createSemiFinals(Long cupId, String matchType) {
+        if (matchRepository.findAllByCupIdAndMatchType(cupId,matchType).isEmpty()) {
+            List<Match> matches = getMatches(cupId, matchType);
+            Cup cup = cupRepository.findCupById(cupId);
+            if (matches.size() < setMatchNumber(matchType)) {
+                System.out.println("Not finished all match");
+                return null;
+            } else {
+                String startTime = matchRepository.getMaxTime(cupId);
+                List<String> teams;
+                List<String> winners = new ArrayList<>();
+                List<String> losers = new ArrayList<>();
+                for (Match match : matches) {
+                    if (match.getScore1() > match.getScore2()) {
+                        winners.add(match.getTeam1());
+                        losers.add(match.getTeam2());
+                    } else {
+                        winners.add(match.getTeam2());
+                        losers.add(match.getTeam1());
+
+                    }
+                }
+                teams = getTeams(matchType, winners, losers);
+                return createMatches(teams, cup, startTime, cup.getMatchTime(), matchType);
+            }
+        }
+        return null;
+    }
+
+    private List<String> getTeams(String matchType, List<String> winners, List<String> losers) {
+        if (matchType.equals("f")) {
+            return Stream.concat(losers.stream(), winners.stream())
+                    .collect(Collectors.toList());
+        } else {
+            return winners;
+        }
+    }
+
+    private int setMatchNumber(String matchType) {
+        if ("f".equals(matchType)) {
+            return 2;
+        }
+        return 4;
+    }
+
+    private List<Match> getMatches(Long cupId, String matchType) {
+        if (matchType.equals("sf")) {
+            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "q");
+        } else {
+            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "sf");
         }
     }
 
