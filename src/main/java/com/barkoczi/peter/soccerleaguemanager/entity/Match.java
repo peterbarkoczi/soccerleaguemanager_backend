@@ -2,6 +2,8 @@ package com.barkoczi.peter.soccerleaguemanager.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -47,6 +49,7 @@ public class Match {
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Cup cup;
 
 }
