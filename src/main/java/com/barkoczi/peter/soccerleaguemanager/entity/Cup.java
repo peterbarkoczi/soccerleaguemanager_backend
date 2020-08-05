@@ -32,7 +32,7 @@ public class Cup {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Location location;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "cup")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "cup", orphanRemoval = true)
     private List<Match> matches = new ArrayList<>();
 
 }
