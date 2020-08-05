@@ -24,6 +24,8 @@ public class Cup {
 
     private String date;
 
+    private String matchTime;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore
