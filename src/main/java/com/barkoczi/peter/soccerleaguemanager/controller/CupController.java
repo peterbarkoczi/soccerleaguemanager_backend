@@ -36,4 +36,9 @@ public class CupController {
         return cupRepository.findAllByOrderByIdAsc();
     }
 
+    @DeleteMapping(value = "/cups/{id}")
+    public String deleteCup(@PathVariable("id") Long id) {
+        cupService.deleteCup(id);
+        return "Cup deleted";
+    }
 }
