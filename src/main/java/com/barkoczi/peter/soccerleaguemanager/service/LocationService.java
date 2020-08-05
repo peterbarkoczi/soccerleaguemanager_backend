@@ -1,6 +1,5 @@
 package com.barkoczi.peter.soccerleaguemanager.service;
 
-import com.barkoczi.peter.soccerleaguemanager.entity.League;
 import com.barkoczi.peter.soccerleaguemanager.entity.Location;
 import com.barkoczi.peter.soccerleaguemanager.repository.LocationRepository;
 import lombok.AllArgsConstructor;
