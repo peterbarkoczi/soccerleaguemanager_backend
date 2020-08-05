@@ -8,14 +8,14 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface MatchRepository extends JpaRepository<Match, Long> {
 
-    List<Match> findAllByCupId(Long cupId);
+public interface MatchRepository extends JpaRepository<Match, Long> {
 
     Match findFirstById(Long id);
 
-//    @Query("SELECT :scorer from Match where id = :id")
-//    String getScorer(@Param("scorer") String scorer, @Param("id") Long id);
+    List<Match> findMatchesByFinishedEqualsAndCupIdAndMatchType(boolean finished, Long cupId, String matchType);
+
+    List<Match> findAllByCupIdAndMatchType(Long cupId, String matchType);
 
     @Query("update Match set score1 = :score, scorer1 = :scorer where id = :id")
     @Modifying(clearAutomatically = true)
@@ -24,4 +24,11 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Query("update Match set score2 = :score, scorer2 = :scorer where id = :id")
     @Modifying(clearAutomatically = true)
     void updateScore2(@Param("score") int score, @Param("scorer") String scorer, @Param("id") Long id);
+
+    @Query("update Match set finished = true where id = :id")
+    @Modifying(clearAutomatically = true)
+    void updateFinished(@Param("id") Long id);
+
+    @Query("select max(time) from Match where finished=true and cup.id = :cupId")
+    String getMaxTime(@Param("cupId") Long cupId);
 }
