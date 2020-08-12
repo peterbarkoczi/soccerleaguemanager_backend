@@ -1,6 +1,7 @@
 package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
+import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
 import com.barkoczi.peter.soccerleaguemanager.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,4 +44,8 @@ public class MatchController {
         matchService.setFinished(match);
     }
 
+    @PatchMapping("/match/update_card")
+    public void updateCard(@RequestBody CardDetails cardDetails) {
+        matchService.updateCard(cardDetails);
+    }
 }

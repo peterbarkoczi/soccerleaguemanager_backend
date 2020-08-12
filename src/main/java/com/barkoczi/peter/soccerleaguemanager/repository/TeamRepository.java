@@ -7,5 +7,7 @@ import java.util.Set;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-    Set<Team> findTeamsByLocation_Id(Long id);
+    Set<Team> findTeamsByLocation_IdOrderByNameAsc(Long id);
+
+    Team findFirstById(Long id);
 }

@@ -31,4 +31,12 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     @Query("select max(time) from Match where finished=true and cup.id = :cupId")
     String getMaxTime(@Param("cupId") Long cupId);
+
+    @Query("update Match set card1 = :player where id = :id")
+    @Modifying(clearAutomatically = true)
+    void updateCard1(@Param("id") Long id, @Param("player") String player);
+
+    @Query("update Match set card2 = :player where id = :id")
+    @Modifying(clearAutomatically = true)
+    void updateCard2(@Param("id") Long id, @Param("player") String player);
 }

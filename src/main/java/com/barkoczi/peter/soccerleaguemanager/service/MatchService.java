@@ -2,6 +2,7 @@ package com.barkoczi.peter.soccerleaguemanager.service;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Cup;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
+import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.CupRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
 import lombok.AllArgsConstructor;
@@ -109,32 +110,13 @@ public class MatchService {
     private Calendar setTime(String startTime) {
         String[] splitTime = startTime.split(":");
         Calendar time = Calendar.getInstance();
-        time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(splitTime[0].replaceAll("\\s+","")));
-        time.set(Calendar.MINUTE, Integer.parseInt(splitTime[1].replaceAll("\\s+","")));
+        time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(splitTime[0].replaceAll("\\s+", "")));
+        time.set(Calendar.MINUTE, Integer.parseInt(splitTime[1].replaceAll("\\s+", "")));
         return time;
     }
 
-    @Transactional
-    public void updateScore(Match match) {
-        String scorer;
-        if (match.getScore1() != null) {
-            scorer = matchRepository.findFirstById(match.getId()).getScorer1();
-            scorer += match.getScorer1() + "\r\n";
-            matchRepository.updateScore1(match.getScore1(), scorer, match.getId());
-        } else if (match.getScore2() != null) {
-            scorer = matchRepository.findFirstById(match.getId()).getScorer2();
-            scorer += match.getScorer2() + "\r\n";
-            matchRepository.updateScore2(match.getScore2(), scorer, match.getId());
-        }
-    }
-
-    @Transactional
-    public void setFinished(Match match) {
-        matchRepository.updateFinished(match.getId());
-    }
-
     public List<Match> createSemiFinals(Long cupId, String matchType) {
-        if (matchRepository.findAllByCupIdAndMatchType(cupId,matchType).isEmpty()) {
+        if (matchRepository.findAllByCupIdAndMatchType(cupId, matchType).isEmpty()) {
             List<Match> matches = getMatches(cupId, matchType);
             Cup cup = cupRepository.findCupById(cupId);
             if (matches.size() < setMatchNumber(matchType)) {
@@ -186,4 +168,38 @@ public class MatchService {
         }
     }
 
+    /* Update methods */
+
+    @Transactional
+    public void updateScore(Match match) {
+        String scorer;
+        if (match.getScore1() != null) {
+            scorer = matchRepository.findFirstById(match.getId()).getScorer1();
+            scorer += match.getScorer1() + "\r\n";
+            matchRepository.updateScore1(match.getScore1(), scorer, match.getId());
+        } else if (match.getScore2() != null) {
+            scorer = matchRepository.findFirstById(match.getId()).getScorer2();
+            scorer += match.getScorer2() + "\r\n";
+            matchRepository.updateScore2(match.getScore2(), scorer, match.getId());
+        }
+    }
+
+    @Transactional
+    public void setFinished(Match match) {
+        matchRepository.updateFinished(match.getId());
+    }
+
+    @Transactional
+    public void updateCard(CardDetails cardDetails) {
+        String player;
+        if (!cardDetails.getCard1().equals("")) {
+            player = matchRepository.findFirstById(cardDetails.getId()).getCard1();
+            player += cardDetails.getType() + " - " + cardDetails.getCard1() + "\r\n";
+            matchRepository.updateCard1(cardDetails.getId(), player);
+        } else if (!cardDetails.getCard2().equals("")) {
+            player = matchRepository.findFirstById(cardDetails.getId()).getCard2();
+            player += cardDetails.getType() + " - " + cardDetails.getCard2() + "\r\n";
+            matchRepository.updateCard2(cardDetails.getId(), player);
+        }
+    }
 }

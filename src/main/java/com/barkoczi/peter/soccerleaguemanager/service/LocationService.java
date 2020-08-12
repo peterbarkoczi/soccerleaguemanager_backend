@@ -32,4 +32,8 @@ public class LocationService {
         return newLocation;
     }
 
+    public void deleteLocation(Long id) {
+        locationRepository.delete(locationRepository.findFirstById(id));
+    }
+
 }
