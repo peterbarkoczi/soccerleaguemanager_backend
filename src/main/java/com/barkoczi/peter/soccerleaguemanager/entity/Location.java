@@ -25,13 +25,13 @@ public class Location {
     private String name;
 
     @Builder.Default
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "location")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "location", orphanRemoval = true)
     private List<League> leagues = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "location")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "location", orphanRemoval = true)
     private Set<Cup> cups;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "location")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "location", orphanRemoval = true)
     private Set<Team> teams;
 
 
