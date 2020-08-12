@@ -51,4 +51,7 @@ public class TeamService {
         return newTeam;
     }
 
+    public void deleteTeam(Long id) {
+        teamRepository.deleteById(id);
+    }
 }

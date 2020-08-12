@@ -21,11 +21,17 @@ public class TeamController {
 
     @GetMapping("/teams")
     public Set<Team> getLocationTeams(@RequestParam() Long id) {
-        return teamRepository.findTeamsByLocation_Id(id);
+        return teamRepository.findTeamsByLocation_IdOrderByNameAsc(id);
     }
 
     @PostMapping("/teams/add_team")
     public Team addNewTeam(@RequestBody TeamDetails teamDetails) {
         return teamService.addTeam(teamDetails);
+    }
+
+    @DeleteMapping(value = "/teams/{id}")
+    public String deleteCup(@PathVariable("id") Long id) {
+        teamService.deleteTeam(id);
+        return "Team deleted";
     }
 }
