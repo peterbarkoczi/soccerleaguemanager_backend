@@ -32,8 +32,8 @@ public class CupController {
     }
 
     @GetMapping("/cups/list")
-    public List<Cup> getCupsList() {
-        return cupRepository.findAllByOrderByIdAsc();
+    public List<Cup> getCupsList(@RequestParam Long locationId) {
+        return cupRepository.findCupsByLocationIdOrderByIdAsc(locationId);
     }
 
     @DeleteMapping(value = "/cups/{id}")
