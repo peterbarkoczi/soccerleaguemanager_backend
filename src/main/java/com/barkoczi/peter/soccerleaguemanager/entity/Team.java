@@ -37,4 +37,7 @@ public class Team {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Location location;
 
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "teams")
+    private List<Player> players;
+
 }
