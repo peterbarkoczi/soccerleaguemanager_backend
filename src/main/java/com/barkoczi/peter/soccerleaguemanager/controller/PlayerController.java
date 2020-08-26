@@ -20,6 +20,11 @@ public class PlayerController {
         return playerService.getPlayersByTeamId(teamId);
     }
 
+    @GetMapping("/player/listByName/{teamName}")
+    public List<Player> getPlayersByName(@PathVariable("teamName") String teamName) {
+        return playerService.getPlayersByTeamName(teamName);
+    }
+
     @PostMapping("/player/add_player/{teamId}")
     public Player addPlayer(@PathVariable("teamId") Long teamId, @RequestBody Player player) {
         System.out.println(player.toString());
