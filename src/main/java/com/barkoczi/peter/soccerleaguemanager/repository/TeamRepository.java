@@ -1,5 +1,6 @@
 package com.barkoczi.peter.soccerleaguemanager.repository;
 
+import com.barkoczi.peter.soccerleaguemanager.entity.League;
 import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,6 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     List<Team> findTeamsByLeagueOrderByNameAsc(League league);
 
     Team findFirstById(Long id);
+
+    Team findByName(String name);
 }
