@@ -44,7 +44,7 @@ public class MatchController {
         matchService.setFinished(match);
     }
 
-    @PatchMapping("/match/update_card")
+    @PostMapping("/match/update_card")
     public void updateCard(@RequestBody CardDetails cardDetails) {
         matchService.updateCard(cardDetails);
     }

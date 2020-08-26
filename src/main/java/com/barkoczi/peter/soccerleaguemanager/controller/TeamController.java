@@ -7,7 +7,7 @@ import com.barkoczi.peter.soccerleaguemanager.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -20,8 +20,13 @@ public class TeamController {
     TeamService teamService;
 
     @GetMapping("/teams")
-    public Set<Team> getLocationTeams(@RequestParam() Long id) {
+    public List<Team> getLocationTeams(@RequestParam() Long id) {
         return teamRepository.findTeamsByLocation_IdOrderByNameAsc(id);
+    }
+
+    @GetMapping("/teams/{leagueId}")
+    public List<Team> getTeamsByLeagueId(@PathVariable("leagueId") Long leagueId) {
+        return teamService.getTeamsByLeague(leagueId);
     }
 
     @PostMapping("/teams/add_team")

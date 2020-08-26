@@ -47,4 +47,8 @@ public class PlayerService {
     public List<Player> getPlayersByTeamId(Long teamId) {
         return playerRepository.findPlayersByTeams(teamRepository.findFirstById(teamId));
     }
+
+    public List<Player> getPlayersByTeamName(String teamName) {
+        return playerRepository.findPlayersByTeams(teamRepository.findByName(teamName));
+    }
 }

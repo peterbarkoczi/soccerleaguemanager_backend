@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,6 +33,10 @@ public class LeagueService {
 
         leagueRepository.saveAndFlush(newLeague);
         return newLeague;
+    }
+
+    public List<League> getLeagueListByLocationId(Long locationId) {
+        return leagueRepository.findLeaguesByLocation_IdOrderByIdAsc(locationId);
     }
 
 }
