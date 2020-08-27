@@ -35,4 +35,7 @@ public class League {
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "league")
     private List<Team> teams = new ArrayList<>();
 
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "league", orphanRemoval = true)
+    private List<Match> matches = new ArrayList<>();
+
 }
