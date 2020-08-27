@@ -52,4 +52,11 @@ public class Match {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Cup cup;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private League league;
+
 }
