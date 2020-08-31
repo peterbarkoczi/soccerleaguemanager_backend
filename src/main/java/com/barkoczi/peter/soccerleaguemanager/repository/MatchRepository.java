@@ -15,6 +15,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     List<Match> findMatchesByFinishedEqualsAndCupIdAndMatchType(boolean finished, Long cupId, String matchType);
 
+    List<Match> findMatchesByFinishedEqualsAndCupIdAndMatchTypeContains(boolean finished, Long cupId, String matchType);
+
     List<Match> findAllByCupIdAndMatchType(Long cupId, String matchType);
 
     @Query("update Match set score1 = :score, scorer1 = :scorer where id = :id")
