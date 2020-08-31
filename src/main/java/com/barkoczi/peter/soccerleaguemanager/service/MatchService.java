@@ -52,7 +52,7 @@ public class MatchService {
         }
 
         for (int i = 0; i < range; i++) {
-            if (matchType.equals("q-1/4") || matchType.equals("q-1/8") || matchType.equals("q-1/16")) {
+            if (matchType.contains("qualifier")) {
                 temp = getRandomTeams(teamsList);
             } else {
                 temp = getFirstTwoTeams(teamsList);
@@ -166,7 +166,7 @@ public class MatchService {
 
     private List<Match> getMatches(Long cupId, String matchType) {
         if (matchType.equals("semiFinal")) {
-            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "q-1/4");
+            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchTypeContains(true, cupId, "qualifier");
         } else {
             return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "semiFinal");
         }
