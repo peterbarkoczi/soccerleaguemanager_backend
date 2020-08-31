@@ -5,6 +5,7 @@ import com.barkoczi.peter.soccerleaguemanager.entity.Match;
 import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.CupRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
+import com.barkoczi.peter.soccerleaguemanager.repository.TeamRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,9 @@ public class MatchService {
     @Autowired
     private CupRepository cupRepository;
 
+    @Autowired
+    private TeamRepository teamRepository;
+
 
     public List<Match> createQualifierMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
         return createMatches(teamsList, cup, startTime, matchTime, matchType);
@@ -43,12 +47,12 @@ public class MatchService {
         List<Match> matches = new ArrayList<>();
         int range = teamsList.size() / 2;
 
-        if (matchType.equals("sf") || matchType.equals("f")) {
+        if (matchType.equals("semiFinal") || matchType.equals("final")) {
             time.add(Calendar.MINUTE, Integer.parseInt(matchTime) + 10);
         }
 
         for (int i = 0; i < range; i++) {
-            if (matchType.equals("q")) {
+            if (matchType.equals("q-1/4") || matchType.equals("q-1/8") || matchType.equals("q-1/16")) {
                 temp = getRandomTeams(teamsList);
             } else {
                 temp = getFirstTwoTeams(teamsList);
@@ -145,7 +149,7 @@ public class MatchService {
     }
 
     private List<String> getTeams(String matchType, List<String> winners, List<String> losers) {
-        if (matchType.equals("f")) {
+        if (matchType.equals("final")) {
             return Stream.concat(losers.stream(), winners.stream())
                     .collect(Collectors.toList());
         } else {
@@ -154,17 +158,17 @@ public class MatchService {
     }
 
     private int setMatchNumber(String matchType) {
-        if ("f".equals(matchType)) {
+        if (matchType.equals("final")) {
             return 2;
         }
         return 4;
     }
 
     private List<Match> getMatches(Long cupId, String matchType) {
-        if (matchType.equals("sf")) {
-            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "q");
+        if (matchType.equals("semiFinal")) {
+            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "q-1/4");
         } else {
-            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "sf");
+            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "semiFinal");
         }
     }
 
