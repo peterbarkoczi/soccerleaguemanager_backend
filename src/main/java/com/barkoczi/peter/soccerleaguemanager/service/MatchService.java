@@ -35,7 +35,7 @@ public class MatchService {
 
 
     public List<Match> createQualifierMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
-        return createMatches(teamsList, cup, startTime, matchTime, matchType);
+        return createMatches(teamsList, cup, startTime, matchTime, matchType, false);
     }
 
     private List<Match> createMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
@@ -47,7 +47,7 @@ public class MatchService {
         List<Match> matches = new ArrayList<>();
         int range = teamsList.size() / 2;
 
-        if (matchType.equals("semiFinal") || matchType.equals("final")) {
+        if (matchType.equals("semiFinal") || matchType.equals("final") || isQualifierNextRound) {
             time.add(Calendar.MINUTE, Integer.parseInt(matchTime) + 10);
         }
 
