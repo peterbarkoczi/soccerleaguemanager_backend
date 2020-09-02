@@ -2,6 +2,7 @@ package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
 import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
+import com.barkoczi.peter.soccerleaguemanager.model.MatchDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
 import com.barkoczi.peter.soccerleaguemanager.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class MatchController {
     public List<Match> getQualifiers(@RequestParam Long cupId, String matchType) {
         return matchRepository.findAllByCupIdAndMatchType(cupId, matchType);
     }
+//
+//    @GetMapping("/match/get_semifinals")
+//    public List<Match> getSemiFinals(@RequestParam Long cupId, String matchType) {
+//        return matchRepository.findAllByCupIdAndMatchType(cupId, matchType);
+//    }
 
     @GetMapping("/match/get_semifinals")
     public List<Match> getSemiFinals(@RequestParam Long cupId, String matchType) {
