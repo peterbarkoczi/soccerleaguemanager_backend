@@ -20,15 +20,10 @@ public class MatchController {
     @Autowired
     private MatchRepository matchRepository;
 
-    @GetMapping("/match/get_qualifiers")
+    @GetMapping("/match/get_matches")
     public List<Match> getQualifiers(@RequestParam Long cupId, String matchType) {
-        return matchRepository.findAllByCupIdAndMatchType(cupId, matchType);
+        return matchRepository.findMatchesByCupIdAndMatchTypeContains(cupId, matchType);
     }
-//
-//    @GetMapping("/match/get_semifinals")
-//    public List<Match> getSemiFinals(@RequestParam Long cupId, String matchType) {
-//        return matchRepository.findAllByCupIdAndMatchType(cupId, matchType);
-//    }
 
     @GetMapping("/match/get_semifinals")
     public List<Match> getSemiFinals(@RequestParam Long cupId, String matchType) {
