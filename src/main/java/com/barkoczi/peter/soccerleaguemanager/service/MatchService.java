@@ -38,7 +38,44 @@ public class MatchService {
         return createMatches(teamsList, cup, startTime, matchTime, matchType, false);
     }
 
-    private List<Match> createMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
+    public List<Match> createQualifiersNextRound(Long cupId, String matchType) {
+        if (!matchRepository.existsMatchByCupIdAndMatchType(cupId, setMatchType(matchType))) {
+            System.out.println("create new round");
+            List<String> teams = createPairs(matchType, matchRepository.findAllByCupIdAndMatchType(cupId, matchType));
+            Cup cup = cupRepository.findCupById(cupId);
+            String matchTime = cup.getMatchTime();
+            String startTime = matchRepository.getMaxTime(cupId);
+
+            return createMatches(teams, cup, startTime, matchTime, setMatchType(matchType), true);
+        }
+        return null;
+    }
+
+    public List<Match> createSemiFinals(Long cupId, String matchType) {
+        if (matchRepository.findAllByCupIdAndMatchType(cupId, matchType).isEmpty()) {
+            List<Match> matches = getMatches(cupId, matchType);
+            Cup cup = cupRepository.findCupById(cupId);
+            if (matches.size() < setMatchNumber(matchType)) {
+                System.out.println("Not finished all match");
+                return null;
+            } else {
+                String startTime = matchRepository.getMaxTime(cupId);
+                List<String> teams = createPairs(matchType, matches);
+                return createMatches(teams, cup, startTime, cup.getMatchTime(), matchType, false);
+            }
+        }
+        return null;
+    }
+
+    private String setMatchType(String matchType) {
+        return switch (matchType) {
+            case "qualifier-1/16" -> "qualifier-1/8";
+            case "qualifier-1/8" -> "qualifier-1/4";
+            default -> null;
+        };
+    }
+
+    private List<Match> createMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType, boolean isQualifierNextRound) {
 
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 
