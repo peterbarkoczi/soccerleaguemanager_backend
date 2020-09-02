@@ -2,6 +2,7 @@ package com.barkoczi.peter.soccerleaguemanager.service;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Cup;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
+import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.CupRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
@@ -156,33 +157,22 @@ public class MatchService {
         return time;
     }
 
-    public List<Match> createSemiFinals(Long cupId, String matchType) {
-        if (matchRepository.findAllByCupIdAndMatchType(cupId, matchType).isEmpty()) {
-            List<Match> matches = getMatches(cupId, matchType);
-            Cup cup = cupRepository.findCupById(cupId);
-            if (matches.size() < setMatchNumber(matchType)) {
-                System.out.println("Not finished all match");
-                return null;
+    private List<String> createPairs(String matchType, List<Match> matches) {
+        List<String> teams;
+        List<String> winners = new ArrayList<>();
+        List<String> losers = new ArrayList<>();
+        for (Match match : matches) {
+            if (match.getScore1() > match.getScore2()) {
+                winners.add(match.getTeam1());
+                losers.add(match.getTeam2());
             } else {
-                String startTime = matchRepository.getMaxTime(cupId);
-                List<String> teams;
-                List<String> winners = new ArrayList<>();
-                List<String> losers = new ArrayList<>();
-                for (Match match : matches) {
-                    if (match.getScore1() > match.getScore2()) {
-                        winners.add(match.getTeam1());
-                        losers.add(match.getTeam2());
-                    } else {
-                        winners.add(match.getTeam2());
-                        losers.add(match.getTeam1());
+                winners.add(match.getTeam2());
+                losers.add(match.getTeam1());
 
-                    }
-                }
-                teams = getTeams(matchType, winners, losers);
-                return createMatches(teams, cup, startTime, cup.getMatchTime(), matchType);
             }
         }
-        return null;
+        teams = getTeams(matchType, winners, losers);
+        return teams;
     }
 
     private List<String> getTeams(String matchType, List<String> winners, List<String> losers) {
@@ -203,7 +193,7 @@ public class MatchService {
 
     private List<Match> getMatches(Long cupId, String matchType) {
         if (matchType.equals("semiFinal")) {
-            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchTypeContains(true, cupId, "qualifier");
+            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchTypeContains(true, cupId, "qualifier-1/4");
         } else {
             return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "semiFinal");
         }
