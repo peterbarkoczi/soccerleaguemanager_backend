@@ -24,9 +24,9 @@ public class MatchController {
         return matchRepository.findMatchesByCupIdAndMatchTypeContains(cupId, matchType);
     }
 
-    @GetMapping("/match/get_semifinals")
-    public List<Match> getSemiFinals(@RequestParam Long cupId, String matchType) {
-        return matchRepository.findAllByCupIdAndMatchType(cupId, matchType);
+    @GetMapping("/match/create_qualifiers_next_round")
+    public List<Match> createQualifiersNextRound(@RequestParam Long cupId, String matchType) {
+        return matchService.createQualifiersNextRound(cupId, matchType);
     }
 
     @GetMapping("/match/create_semi_finals")
