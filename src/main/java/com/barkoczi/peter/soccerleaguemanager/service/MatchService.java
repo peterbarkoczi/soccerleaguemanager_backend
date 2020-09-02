@@ -2,6 +2,7 @@ package com.barkoczi.peter.soccerleaguemanager.service;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Cup;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
+import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.CupRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
@@ -35,10 +36,47 @@ public class MatchService {
 
 
     public List<Match> createQualifierMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
-        return createMatches(teamsList, cup, startTime, matchTime, matchType);
+        return createMatches(teamsList, cup, startTime, matchTime, matchType, false);
     }
 
-    private List<Match> createMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
+    public List<Match> createQualifiersNextRound(Long cupId, String matchType) {
+        if (!matchRepository.existsMatchByCupIdAndMatchType(cupId, setMatchType(matchType))) {
+            System.out.println("create new round");
+            List<String> teams = createPairs(matchType, matchRepository.findAllByCupIdAndMatchType(cupId, matchType));
+            Cup cup = cupRepository.findCupById(cupId);
+            String matchTime = cup.getMatchTime();
+            String startTime = matchRepository.getMaxTime(cupId);
+
+            return createMatches(teams, cup, startTime, matchTime, setMatchType(matchType), true);
+        }
+        return null;
+    }
+
+    public List<Match> createSemiFinals(Long cupId, String matchType) {
+        if (matchRepository.findAllByCupIdAndMatchType(cupId, matchType).isEmpty()) {
+            List<Match> matches = getMatches(cupId, matchType);
+            Cup cup = cupRepository.findCupById(cupId);
+            if (matches.size() < setMatchNumber(matchType)) {
+                System.out.println("Not finished all match");
+                return null;
+            } else {
+                String startTime = matchRepository.getMaxTime(cupId);
+                List<String> teams = createPairs(matchType, matches);
+                return createMatches(teams, cup, startTime, cup.getMatchTime(), matchType, false);
+            }
+        }
+        return null;
+    }
+
+    private String setMatchType(String matchType) {
+        return switch (matchType) {
+            case "qualifier-1/16" -> "qualifier-1/8";
+            case "qualifier-1/8" -> "qualifier-1/4";
+            default -> null;
+        };
+    }
+
+    private List<Match> createMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType, boolean isQualifierNextRound) {
 
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 
@@ -47,12 +85,12 @@ public class MatchService {
         List<Match> matches = new ArrayList<>();
         int range = teamsList.size() / 2;
 
-        if (matchType.equals("semiFinal") || matchType.equals("final")) {
+        if (matchType.equals("semiFinal") || matchType.equals("final") || isQualifierNextRound) {
             time.add(Calendar.MINUTE, Integer.parseInt(matchTime) + 10);
         }
 
         for (int i = 0; i < range; i++) {
-            if (matchType.equals("q-1/4") || matchType.equals("q-1/8") || matchType.equals("q-1/16")) {
+            if (matchType.contains("qualifier")) {
                 temp = getRandomTeams(teamsList);
             } else {
                 temp = getFirstTwoTeams(teamsList);
@@ -119,33 +157,22 @@ public class MatchService {
         return time;
     }
 
-    public List<Match> createSemiFinals(Long cupId, String matchType) {
-        if (matchRepository.findAllByCupIdAndMatchType(cupId, matchType).isEmpty()) {
-            List<Match> matches = getMatches(cupId, matchType);
-            Cup cup = cupRepository.findCupById(cupId);
-            if (matches.size() < setMatchNumber(matchType)) {
-                System.out.println("Not finished all match");
-                return null;
+    private List<String> createPairs(String matchType, List<Match> matches) {
+        List<String> teams;
+        List<String> winners = new ArrayList<>();
+        List<String> losers = new ArrayList<>();
+        for (Match match : matches) {
+            if (match.getScore1() > match.getScore2()) {
+                winners.add(match.getTeam1());
+                losers.add(match.getTeam2());
             } else {
-                String startTime = matchRepository.getMaxTime(cupId);
-                List<String> teams;
-                List<String> winners = new ArrayList<>();
-                List<String> losers = new ArrayList<>();
-                for (Match match : matches) {
-                    if (match.getScore1() > match.getScore2()) {
-                        winners.add(match.getTeam1());
-                        losers.add(match.getTeam2());
-                    } else {
-                        winners.add(match.getTeam2());
-                        losers.add(match.getTeam1());
+                winners.add(match.getTeam2());
+                losers.add(match.getTeam1());
 
-                    }
-                }
-                teams = getTeams(matchType, winners, losers);
-                return createMatches(teams, cup, startTime, cup.getMatchTime(), matchType);
             }
         }
-        return null;
+        teams = getTeams(matchType, winners, losers);
+        return teams;
     }
 
     private List<String> getTeams(String matchType, List<String> winners, List<String> losers) {
@@ -166,7 +193,7 @@ public class MatchService {
 
     private List<Match> getMatches(Long cupId, String matchType) {
         if (matchType.equals("semiFinal")) {
-            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "q-1/4");
+            return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchTypeContains(true, cupId, "qualifier-1/4");
         } else {
             return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "semiFinal");
         }
