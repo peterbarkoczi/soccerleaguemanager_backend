@@ -1,6 +1,7 @@
 package com.barkoczi.peter.soccerleaguemanager.service;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Cup;
+import com.barkoczi.peter.soccerleaguemanager.entity.League;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
 import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
@@ -36,7 +37,7 @@ public class MatchService {
 
 
     public List<Match> createQualifierMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
-        return createMatches(teamsList, cup, startTime, matchTime, matchType, false);
+        return createMatches(teamsList, cup, null, startTime, matchTime, matchType, false, false);
     }
 
     public List<Match> createQualifiersNextRound(Long cupId, String matchType) {
@@ -47,7 +48,7 @@ public class MatchService {
             String matchTime = cup.getMatchTime();
             String startTime = matchRepository.getMaxTime(cupId);
 
-            return createMatches(teams, cup, startTime, matchTime, setMatchType(matchType), true);
+            return createMatches(teams, cup, null, startTime, matchTime, setMatchType(matchType), true, false);
         }
         return null;
     }
@@ -62,7 +63,7 @@ public class MatchService {
             } else {
                 String startTime = matchRepository.getMaxTime(cupId);
                 List<String> teams = createPairs(matchType, matches);
-                return createMatches(teams, cup, startTime, cup.getMatchTime(), matchType, false);
+                return createMatches(teams, cup, null, startTime, cup.getMatchTime(), matchType, false, false);
             }
         }
         return null;
@@ -76,7 +77,7 @@ public class MatchService {
         };
     }
 
-    private List<Match> createMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType, boolean isQualifierNextRound) {
+    private List<Match> createMatches(List<String> teamsList, Cup cup, League league, String startTime, String matchTime, String matchType, boolean isQualifierNextRound, boolean isGroupMatch) {
 
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 
@@ -92,11 +93,14 @@ public class MatchService {
         for (int i = 0; i < range; i++) {
             if (matchType.contains("qualifier")) {
                 temp = getRandomTeams(teamsList);
+            } else if (isGroupMatch) {
+                temp = teamsList;
             } else {
                 temp = getFirstTwoTeams(teamsList);
             }
             Match newMatch = Match.builder()
                     .cup(cup)
+                    .league(league)
                     .time(df.format(time.getTime()))
                     .team1(temp.get(0))
                     .team2(temp.get(1))
@@ -198,6 +202,10 @@ public class MatchService {
             return matchRepository.findMatchesByFinishedEqualsAndCupIdAndMatchType(true, cupId, "semiFinal");
         }
     }
+
+//    public List<Match> createGroupMatchesForLeague(List<String> teamList, League league, ) {
+//        return null;
+//    }
 
     /* Update methods */
 
