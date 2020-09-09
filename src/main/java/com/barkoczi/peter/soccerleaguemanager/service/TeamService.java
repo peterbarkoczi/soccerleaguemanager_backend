@@ -38,13 +38,13 @@ public class TeamService {
     }
 
     private Team createAndSaveNewTeam(TeamDetails teamDetails) {
-        League league = leagueRepository.findFirstByName(teamDetails.getLeagueName());
-        List<League> leagues = new ArrayList<>();
-        leagues.add(league);
+//        League league = leagueRepository.findFirstByName(teamDetails.getLeagueName());
+//        List<League> leagues = new ArrayList<>();
+//        leagues.add(league);
         Team newTeam = Team.builder()
                 .name(teamDetails.getTeamName())
                 .location(locationRepository.findFirstById(teamDetails.getLocationId()))
-                .league(leagues)
+                .league(new ArrayList<>())
                 .build();
 
         teamRepository.saveAndFlush(newTeam);
