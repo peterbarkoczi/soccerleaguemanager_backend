@@ -1,6 +1,5 @@
 package com.barkoczi.peter.soccerleaguemanager.service;
 
-import com.barkoczi.peter.soccerleaguemanager.entity.League;
 import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import com.barkoczi.peter.soccerleaguemanager.model.TeamDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.LeagueRepository;
@@ -38,9 +37,6 @@ public class TeamService {
     }
 
     private Team createAndSaveNewTeam(TeamDetails teamDetails) {
-//        League league = leagueRepository.findFirstByName(teamDetails.getLeagueName());
-//        List<League> leagues = new ArrayList<>();
-//        leagues.add(league);
         Team newTeam = Team.builder()
                 .name(teamDetails.getTeamName())
                 .location(locationRepository.findFirstById(teamDetails.getLocationId()))
