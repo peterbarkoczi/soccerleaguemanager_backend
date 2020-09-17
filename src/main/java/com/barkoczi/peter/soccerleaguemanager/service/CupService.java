@@ -36,6 +36,7 @@ public class CupService {
                 .name(cupDetails.getName())
                 .date(cupDetails.getDate())
                 .matchTime(cupDetails.getMatchTime())
+                .qualifierType(cupDetails.getMatchType())
                 .location(locationRepository.findFirstById(cupDetails.getLocationId()))
                 .build();
         cupRepository.saveAndFlush(newCup);
