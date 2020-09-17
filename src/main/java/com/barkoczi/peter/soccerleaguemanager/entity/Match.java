@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +19,8 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
+
+    private String date;
 
     private String time;
     private String team1;
@@ -58,5 +61,8 @@ public class Match {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private League league;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "matches")
+    private List<Team> teams;
 
 }
