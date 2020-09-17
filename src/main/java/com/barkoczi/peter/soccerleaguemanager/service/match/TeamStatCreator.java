@@ -64,7 +64,7 @@ public class TeamStatCreator {
                 int score = teamTeamStat.getScore();
                 int receivedScore = teamTeamStat.getReceivedScore();
                 teamTeamStat.setPlayedMatch(played + 1);
-                if (match.getTeams().get(0).getName().equals(teamTeamStat.getTeam())) {
+                if (match.getTeam1().equals(teamTeamStat.getTeam())) {
                     teamTeamStat.setScore(score + match.getScore1());
                     teamTeamStat.setReceivedScore(receivedScore + match.getScore2());
                     teamTeamStat.setPoint(setPoints(match.getScore1(), match.getScore2(), points));
