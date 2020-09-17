@@ -31,12 +31,17 @@ public class MatchController {
 
     @GetMapping("/match/create_qualifiers_next_round")
     public List<Match> createQualifiersNextRound(@RequestParam Long cupId, String matchType) {
-        return matchService.createQualifiersNextRound(cupId, matchType);
+        return matchService.createQualifiersNextRound(cupId, matchType).get(0);
     }
 
     @GetMapping("/match/create_semi_finals")
     public List<Match> createSemiFinals(@RequestParam Long cupId, String matchType) {
-        return matchService.createSemiFinals(cupId, matchType);
+        List<List<Match>> result = matchService.createSemiFinals(cupId, matchType);
+        if (result != null) {
+            System.out.println(result);
+            return result.get(0);
+        }
+        return null;
     }
 
     @GetMapping("/match/getGroupStat")

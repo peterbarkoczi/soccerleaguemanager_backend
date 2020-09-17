@@ -4,7 +4,7 @@ import com.barkoczi.peter.soccerleaguemanager.entity.Cup;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
 import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
-import com.barkoczi.peter.soccerleaguemanager.model.GroupStat;
+import com.barkoczi.peter.soccerleaguemanager.model.TeamStat;
 import com.barkoczi.peter.soccerleaguemanager.repository.CupRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.TeamRepository;
@@ -142,11 +142,11 @@ public class MatchService {
 
     /* Create group table */
 
-    Map<String, GroupStat> createGroupTable(Cup cup) {
+    Map<String, TeamStat> createGroupTable(Cup cup) {
         List<Match> group1 = matchRepository.findAllByCupIdAndMatchType(cup.getId(), "group1");
         List<Match> group2 = matchRepository.findAllByCupIdAndMatchType(cup.getId(), "group2");
 
-        GroupStat group1Details = new GroupStat();
+        TeamStat group1Details = new TeamStat();
         Set<String> teams = new TreeSet<>();
         Map<String, Map<String, String>> details = new TreeMap<>();
 
