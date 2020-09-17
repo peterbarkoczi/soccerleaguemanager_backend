@@ -59,4 +59,7 @@ public class Match {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private League league;
 
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "matches")
+    private List<Team> teams;
+
 }

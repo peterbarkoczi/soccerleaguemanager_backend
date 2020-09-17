@@ -40,4 +40,10 @@ public class Team {
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "teams")
     private List<Player> players;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Match> matches = new ArrayList<>();
+
 }
