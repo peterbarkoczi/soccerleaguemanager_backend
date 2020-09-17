@@ -25,8 +25,8 @@ public class Cup {
     private String name;
 
     private String date;
-
     private String matchTime;
+    private String qualifierType;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
