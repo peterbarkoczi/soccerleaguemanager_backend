@@ -41,6 +41,7 @@ public class TeamService {
                 .name(teamDetails.getTeamName())
                 .location(locationRepository.findFirstById(teamDetails.getLocationId()))
                 .league(new ArrayList<>())
+                .matches(new ArrayList<>())
                 .build();
 
         teamRepository.saveAndFlush(newTeam);
