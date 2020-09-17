@@ -52,9 +52,11 @@ public class EliminationCreator {
         for (int i = 0; i < range; i++) {
             if (matchType.contains("qualifier")) {
                 temp = getRandomTeams(teamsList);
-            } else if (isGroupMatch) {
-                temp = teamsList;
-            } else {
+            }
+//            else if (isGroupMatch) {
+//                temp = teamsList;
+//            }
+            else {
                 temp = getFirstTwoTeams(teamsList);
             }
             Match newMatch = Match.builder()

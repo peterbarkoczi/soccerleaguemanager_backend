@@ -38,6 +38,9 @@ public class MatchService {
     @Autowired
     private GroupCreator groupCreator;
 
+    @Autowired
+    private SemiFinalCreator semiFinalCreator;
+
 
     public List<List<Match>> createQualifierMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
         if (matchType.equals("group")) {
@@ -61,18 +64,22 @@ public class MatchService {
     }
 
     public List<List<Match>> createSemiFinals(Long cupId, String matchType) {
-        List<Match> matches = new ArrayList<>();
         if (matchRepository.findAllByCupIdAndMatchType(cupId, matchType).isEmpty()) {
             Cup cup = cupRepository.findCupById(cupId);
-            matches = eliminationCreator.getMatches(cupId, matchType);
-            if (matches.size() < eliminationCreator.setMatchNumber(matchType)) {
-                System.out.println("Not finished all match");
-                return null;
+            if (cup.getQualifierType().equals("group") && matchType.equals("semiFinal")) {
+                return semiFinalCreator.createSemiFinalsFromGroup(cup, matchType);
             } else {
-                String startTime = matchRepository.getMaxTime(cupId);
-                List<String> teams = eliminationCreator.createPairs(matchType, matches);
-                return eliminationCreator.createMatches(teams, cup, null, startTime, cup.getMatchTime(), matchType, false, false);
+                List<Match> matches = eliminationCreator.getMatches(cupId, matchType);
+                if (matches.size() < eliminationCreator.setMatchNumber(matchType)) {
+                    System.out.println("Not finished all match");
+                    return null;
+                } else {
+                    String startTime = matchRepository.getMaxTime(cupId);
+                    List<String> teams = eliminationCreator.createPairs(matchType, matches);
+                    return eliminationCreator.createMatches(teams, cup, null, startTime, cup.getMatchTime(), matchType, false, false);
+                }
             }
+
         }
         return null;
     }
