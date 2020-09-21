@@ -65,4 +65,11 @@ public class Match {
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "matches")
     private List<Team> teams;
 
+    @PreRemove
+    private void removeTeamsFromMatches() {
+        for (Team team : teams) {
+            team.getMatches().remove(this);
+        }
+    }
+
 }
