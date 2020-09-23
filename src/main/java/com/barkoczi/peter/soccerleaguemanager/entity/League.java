@@ -24,6 +24,10 @@ public class League {
     @Column(nullable = false)
     private String name;
 
+    private String date;
+    private String matchTime;
+    private String gameDay;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore
