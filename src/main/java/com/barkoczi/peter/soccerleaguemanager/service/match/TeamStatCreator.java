@@ -38,8 +38,12 @@ public class TeamStatCreator {
         return result;
     }
 
-    private List<Match> getMatchesByGroup(Long cupId, String matchType) {
-        return matchRepository.findMatchesByCupIdAndMatchTypeContains(cupId, matchType);
+    private List<Match> getMatchesByGroup(Long cupId, Long leagueId, String matchType) {
+        if (leagueId != null) {
+            return matchRepository.findMatchesByLeagueId(leagueId);
+        } else {
+            return matchRepository.findMatchesByCupIdAndMatchTypeContains(cupId, matchType);
+        }
     }
 
     private void setTeamsByGroup(List<Match> matches, List<TeamStat> result) {
