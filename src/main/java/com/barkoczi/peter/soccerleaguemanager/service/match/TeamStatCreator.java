@@ -67,21 +67,31 @@ public class TeamStatCreator {
                 if (match.getTeam1().equals(teamTeamStat.getTeam())) {
                     teamTeamStat.setScore(score + match.getScore1());
                     teamTeamStat.setReceivedScore(receivedScore + match.getScore2());
-                    teamTeamStat.setPoint(setPoints(match.getScore1(), match.getScore2(), points));
+                    teamTeamStat.setPoint(setPoints(match.getScore1(), match.getScore2(), points, teamTeamStat));
                 } else {
                     teamTeamStat.setScore(score + match.getScore2());
                     teamTeamStat.setReceivedScore(receivedScore + match.getScore1());
-                    teamTeamStat.setPoint(setPoints(match.getScore2(), match.getScore1(), points));
+                    teamTeamStat.setPoint(setPoints(match.getScore2(), match.getScore1(), points, teamTeamStat));
                 }
             }
         }
         teamTeamStat.setDifference(teamTeamStat.getScore() - teamTeamStat.getReceivedScore());
     }
 
-    private int setPoints(int score1, int score2, int point) {
-        if (score1 > score2) return point + 3;
-        if (score1 < score2) return point;
-        return point + 1;
+    private int setPoints(int score1, int score2, int point, TeamStat teamTeamStat) {
+        if (score1 > score2) {
+            int win = teamTeamStat.getWin();
+            teamTeamStat.setWin(win + 1);
+            return point + 3;
+        } else if (score1 < score2) {
+            int loses = teamTeamStat.getLose();
+            teamTeamStat.setLose(loses + 1);
+            return point;
+        } else {
+            int draw = teamTeamStat.getDraw();
+            teamTeamStat.setDraw(draw + 1);
+            return point + 1;
+        }
     }
 
     private void sortGroup(List<TeamStat> group) {
