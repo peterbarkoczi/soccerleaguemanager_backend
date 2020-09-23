@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -53,17 +57,29 @@ public class GroupCreator {
             Cup cup, League league, String startTime,
             String matchTime, Map<String, List<List<String>>> schedule, String type) {
 
+        String date;
+        DayOfWeek actualDay = null;
+        List<DayOfWeek> gameDays = new ArrayList<>();
+        if (league != null) {
+            date = league.getDate();
+            gameDays = createDaysList(Arrays.asList(league.getGameDay().split("\\s*,\\s*")));
+        } else {
+            date = cup.getDate();
+        }
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");
         List<List<Match>> allRound = new ArrayList<>();
         Calendar time = eliminationCreator.setTime(startTime);
 
+
+
         for (Map.Entry<String, List<List<String>>> round : schedule.entrySet()) {
             List<Match> roundMatches = new ArrayList<>();
+            if (league != null) time = eliminationCreator.setTime(startTime);
             for (List<String> pair : round.getValue()) {
                 Match tempMatch = Match.builder()
                         .cup(cup)
                         .league(league)
-                        .date(cup.getDate())
+                        .date(date)
                         .time(df.format(time.getTime()))
                         .team1(pair.get(0))
                         .team2(pair.get(1))
@@ -79,6 +95,10 @@ public class GroupCreator {
 
                 roundMatches.add(tempMatch);
                 time.add(Calendar.MINUTE, Integer.parseInt(matchTime) + 5);
+            }
+            if (league != null) {
+                actualDay = setGameDay(gameDays, actualDay);
+                date = setDate(date, actualDay);
             }
             MatchService.saveMatches(allRound, roundMatches, matchRepository, teamRepository);
         }
@@ -165,6 +185,42 @@ public class GroupCreator {
 
     private List<String> changeTeamsOrder(List<String> match) {
         return Arrays.asList(match.get(1), match.get(0));
+    }
+
+    /* */
+
+    private String setDate(String matchDate, DayOfWeek actualDay) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        LocalDate tempDate = LocalDate.parse(matchDate, formatter);
+        tempDate = tempDate.with(TemporalAdjusters.next(actualDay));
+
+        return tempDate.format(formatter);
+    }
+
+    private List<DayOfWeek> createDaysList(List<String> gameDays) {
+        List<DayOfWeek> dayOfWeeks = new ArrayList<>();
+
+        for (String day : gameDays) {
+            switch (day) {
+                case "Hétfő" -> dayOfWeeks.add(DayOfWeek.MONDAY);
+                case "Kedd" -> dayOfWeeks.add(DayOfWeek.TUESDAY);
+                case "Szerda" -> dayOfWeeks.add(DayOfWeek.WEDNESDAY);
+                case "Csütörtök" -> dayOfWeeks.add(DayOfWeek.THURSDAY);
+                case "Péntek" -> dayOfWeeks.add(DayOfWeek.FRIDAY);
+                case "Szombat" -> dayOfWeeks.add(DayOfWeek.SATURDAY);
+                case "Vasárnap" -> dayOfWeeks.add(DayOfWeek.SUNDAY);
+            }
+        }
+        return dayOfWeeks;
+    }
+
+    private DayOfWeek setGameDay(List<DayOfWeek> days, DayOfWeek currentDay) {
+        int currentDayIndex = days.indexOf(currentDay);
+        if (currentDay == null || currentDayIndex == days.size() - 1) {
+            return days.get(0);
+        } else {
+            return days.get(currentDayIndex + 1);
+        }
     }
 
 }
