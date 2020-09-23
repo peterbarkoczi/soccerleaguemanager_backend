@@ -40,8 +40,8 @@ public class SemiFinalCreator {
     }
 
     private List<String> createSemiFinalPairs(Long cupId) {
-        List<TeamStat> group1 = teamStatCreator.createTeamStat(cupId, "group1");
-        List<TeamStat> group2 = teamStatCreator.createTeamStat(cupId, "group2");
+        List<TeamStat> group1 = teamStatCreator.createTeamStat(cupId, null, "group1");
+        List<TeamStat> group2 = teamStatCreator.createTeamStat(cupId, null, "group2");
 
         System.out.println("group1: " + group1);
         System.out.println("group2: " + group2);

@@ -25,9 +25,9 @@ public class TeamStatCreator {
     @Autowired
     private MatchRepository matchRepository;
 
-    public List<TeamStat> createTeamStat(Long cupId, String group) {
+    public List<TeamStat> createTeamStat(Long cupId, Long leagueId, String group) {
         List<TeamStat> result = new ArrayList<>();
-        List<Match> tempGroup = getMatchesByGroup(cupId, group);
+        List<Match> tempGroup = getMatchesByGroup(cupId, leagueId, group);
         setTeamsByGroup(tempGroup, result);
 
         for (TeamStat teamTeamStat : result) {

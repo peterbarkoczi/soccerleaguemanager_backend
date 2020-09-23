@@ -50,8 +50,8 @@ public class MatchController {
     }
 
     @GetMapping("/match/getGroupStat")
-    public List<TeamStat> getTeamStat(@RequestParam Long cupId, String group) {
-        return teamStatCreator.createTeamStat(cupId, group);
+    public List<TeamStat> getTeamStat(@RequestParam Long cupId, Long leagueId, String group) {
+        return teamStatCreator.createTeamStat(cupId, leagueId, group);
     }
 
     /*
