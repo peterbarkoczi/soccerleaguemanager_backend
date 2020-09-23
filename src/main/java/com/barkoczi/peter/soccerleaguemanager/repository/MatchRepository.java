@@ -21,6 +21,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     List<Match> findMatchesByCupIdAndMatchTypeContains(Long cupId, String matchType);
 
+    List<Match> findMatchesByLeagueId(Long leagueId);
+
     boolean existsMatchByCupIdAndMatchType(Long cupId, String matchType);
 
     @Query("update Match set score1 = :score, scorer1 = :scorer where id = :id")

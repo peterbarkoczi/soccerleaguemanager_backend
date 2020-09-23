@@ -29,6 +29,11 @@ public class MatchController {
         return matchRepository.findMatchesByCupIdAndMatchTypeContains(cupId, matchType);
     }
 
+    @GetMapping("/match/get_league_matches")
+    public List<Match> getLeagueMatches(@RequestParam Long leagueId) {
+        return matchRepository.findMatchesByLeagueId(leagueId);
+    }
+
     @GetMapping("/match/create_qualifiers_next_round")
     public List<Match> createQualifiersNextRound(@RequestParam Long cupId, String matchType) {
         return matchService.createQualifiersNextRound(cupId, matchType).get(0);
@@ -45,8 +50,8 @@ public class MatchController {
     }
 
     @GetMapping("/match/getGroupStat")
-    public List<TeamStat> getTeamStat(@RequestParam Long cupId, String group) {
-        return teamStatCreator.createTeamStat(cupId, group);
+    public List<TeamStat> getTeamStat(@RequestParam Long cupId, Long leagueId, String group) {
+        return teamStatCreator.createTeamStat(cupId, leagueId, group);
     }
 
     /*
