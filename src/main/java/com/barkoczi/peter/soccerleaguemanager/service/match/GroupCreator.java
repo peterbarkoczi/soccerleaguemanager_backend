@@ -83,6 +83,7 @@ public class GroupCreator {
                             .league(league)
                             .team1(pair.get(0).equals("free") ? pair.get(1) : pair.get(0))
                             .team2("free")
+                            .finished(true)
                             .matchType(type + " - round - " + round.getKey() + "free")
                             .build();
                     roundMatches.add(0, tempMatch);
