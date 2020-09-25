@@ -36,11 +36,11 @@ public class LeagueService {
                 .date(leagueDetails.getDate())
                 .matchTime(leagueDetails.getMatchTime())
                 .gameDay(String.join(",", leagueDetails.getGameDays()))
-                .location(locationRepository.findFirstById(leagueDetails.getLocationId()))
+                .location(locationRepository.findLocationByName(leagueDetails.getLocationName()))
                 .build();
         leagueRepository.saveAndFlush(newLeague);
 
-        League league = leagueRepository.findByNameAndLocation_Id(leagueDetails.getName(), leagueDetails.getLocationId());
+        League league = leagueRepository.findLeagueByLocationNameAndName(leagueDetails.getLocationName(), leagueDetails.getName());
         List<List<Match>> rounds = groupCreator.createGroupMatches(
                 leagueDetails.getTeams(),
                 null,

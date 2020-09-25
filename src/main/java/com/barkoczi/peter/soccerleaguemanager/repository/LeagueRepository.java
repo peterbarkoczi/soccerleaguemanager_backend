@@ -7,10 +7,14 @@ import java.util.List;
 
 public interface LeagueRepository extends JpaRepository<League, Long> {
 
-    League findByNameAndLocation_Id(String name, Long locationId);
-
     League findFirstById(Long id);
 
+    League findLeagueByName(String name);
+
+    League findLeagueByLocationNameAndName(String locationName, String name);
+
     List<League> findLeaguesByLocation_IdOrderByIdAsc(Long locationId);
+
+    List<League> findLeaguesByLocationNameOrderById(String shortName);
 
 }

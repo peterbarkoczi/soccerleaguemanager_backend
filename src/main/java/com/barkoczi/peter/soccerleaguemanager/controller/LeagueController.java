@@ -2,6 +2,7 @@ package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.League;
 import com.barkoczi.peter.soccerleaguemanager.model.LeagueDetails;
+import com.barkoczi.peter.soccerleaguemanager.repository.LeagueRepository;
 import com.barkoczi.peter.soccerleaguemanager.service.LeagueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,12 @@ public class LeagueController {
     @Autowired
     private LeagueService leagueService;
 
-    @GetMapping("/league/get_league_list/{locationId}")
-    public List<League> getLeagueList(@PathVariable("locationId") Long locationId) {
-        return leagueService.getLeagueListByLocationId(locationId);
+    @Autowired
+    private LeagueRepository leagueRepository;
+
+    @GetMapping("/league/get_league_list/{locationName}")
+    public List<League> getLeagueListByShortName(@PathVariable("locationName") String locationName) {
+        return leagueRepository.findLeaguesByLocationNameOrderById(locationName);
     }
 
     @PostMapping("/league/create_league")
