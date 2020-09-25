@@ -22,6 +22,7 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     @Builder.Default
