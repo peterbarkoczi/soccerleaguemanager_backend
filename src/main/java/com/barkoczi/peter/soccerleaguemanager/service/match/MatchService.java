@@ -189,9 +189,9 @@ public class MatchService {
         return null;
     }
 
-    public List<Match> getMatchesByLeagueName(String leagueName) {
-        if (leagueName == null) return null;
-        League league = leagueRepository.findLeagueByName(leagueName);
+    public List<Match> getMatchesByLeagueName(String locationName, String leagueName) {
+        if (leagueName == null || locationName == null) return null;
+        League league = leagueRepository.findLeagueByLocationNameAndName(locationName, leagueName);
         return matchRepository.findMatchesByLeagueId(league.getId());
     }
 
