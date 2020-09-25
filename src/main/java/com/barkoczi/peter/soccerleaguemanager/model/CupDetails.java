@@ -21,7 +21,7 @@ public class CupDetails {
     private String date;
     private String startTime;
     private String matchTime;
-    private Long locationId;
+    private String locationName;
     private String matchType;
 
 }

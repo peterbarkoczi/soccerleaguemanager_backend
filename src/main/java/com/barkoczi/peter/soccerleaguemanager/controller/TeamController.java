@@ -20,8 +20,8 @@ public class TeamController {
     TeamService teamService;
 
     @GetMapping("/teams")
-    public List<Team> getLocationTeams(@RequestParam() Long id) {
-        return teamRepository.findTeamsByLocation_IdOrderByNameAsc(id);
+    public List<Team> getLocationTeams(@RequestParam() String locationName) {
+        return teamRepository.findTeamsByLocationNameOrderByNameAsc(locationName);
     }
 
     @GetMapping("/teams/{leagueId}")

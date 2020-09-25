@@ -27,10 +27,10 @@ public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
 
-    public Player addPlayer(Long teamId, Player player) {
+    public Player addPlayer(String locationName, String teamName, Player player) {
 
         List<Team> teams = new ArrayList<>();
-        teams.add(teamRepository.findFirstById(teamId));
+        teams.add(teamRepository.findTeamByLocationNameAndName(locationName, teamName));
         Player newPlayer = Player.builder()
                 .number(player.getNumber())
                 .name(player.getName())

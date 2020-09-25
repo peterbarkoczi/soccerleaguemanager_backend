@@ -25,9 +25,10 @@ public class PlayerController {
         return playerService.getPlayersByTeamName(teamName);
     }
 
-    @PostMapping("/player/add_player/{teamId}")
-    public Player addPlayer(@PathVariable("teamId") Long teamId, @RequestBody Player player) {
-        System.out.println(player.toString());
-        return playerService.addPlayer(teamId, player);
+    @PostMapping("/player/add_player/{locationName}-{teamName}")
+    public Player addPlayer(@PathVariable("locationName") String locationName,
+                            @PathVariable("teamName") String teamName,
+                            @RequestBody Player player) {
+        return playerService.addPlayer(locationName, teamName, player);
     }
 }

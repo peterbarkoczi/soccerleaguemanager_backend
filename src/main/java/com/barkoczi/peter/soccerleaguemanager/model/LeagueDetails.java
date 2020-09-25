@@ -21,6 +21,6 @@ public class LeagueDetails {
     private String startTime;
     private List<String> gameDays;
     private String matchTime;
-    private Long locationId;
+    private String locationName;
 
 }

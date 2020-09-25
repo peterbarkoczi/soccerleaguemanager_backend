@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class TeamDetails {
 
     private String teamName;
-    private Long locationId;
-    private String leagueName;
+    private String locationName;
 
 }

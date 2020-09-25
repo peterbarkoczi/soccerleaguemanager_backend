@@ -39,7 +39,7 @@ public class TeamService {
     private Team createAndSaveNewTeam(TeamDetails teamDetails) {
         Team newTeam = Team.builder()
                 .name(teamDetails.getTeamName())
-                .location(locationRepository.findFirstById(teamDetails.getLocationId()))
+                .location(locationRepository.findLocationByName(teamDetails.getLocationName()))
                 .league(new ArrayList<>())
                 .matches(new ArrayList<>())
                 .build();
