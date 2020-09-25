@@ -104,17 +104,19 @@ public class MatchService {
             matchRepository.saveAndFlush(match);
         }
         for (Match match : matches) {
-            Match tempMatch = matchRepository.getOne(match.getId());
-            Team tempTeam1 = teamRepository.findByName(tempMatch.getTeam1());
-            Team tempTeam2 = teamRepository.findByName(tempMatch.getTeam2());
-            List<Match> matches1 = tempTeam1.getMatches();
-            List<Match> matches2 = tempTeam2.getMatches();
-            matches1.add(tempMatch);
-            matches2.add(tempMatch);
-            tempTeam1.setMatches(matches1);
-            tempTeam2.setMatches(matches2);
-            teamRepository.saveAndFlush(tempTeam1);
-            teamRepository.saveAndFlush(tempTeam2);
+            if (!match.getTeam2().equals("free")) {
+                Match tempMatch = matchRepository.getOne(match.getId());
+                Team tempTeam1 = teamRepository.findByName(tempMatch.getTeam1());
+                Team tempTeam2 = teamRepository.findByName(tempMatch.getTeam2());
+                List<Match> matches1 = tempTeam1.getMatches();
+                List<Match> matches2 = tempTeam2.getMatches();
+                matches1.add(tempMatch);
+                matches2.add(tempMatch);
+                tempTeam1.setMatches(matches1);
+                tempTeam2.setMatches(matches2);
+                teamRepository.saveAndFlush(tempTeam1);
+                teamRepository.saveAndFlush(tempTeam2);
+            }
         }
         allMatch.add(matches);
     }
