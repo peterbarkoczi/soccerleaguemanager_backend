@@ -9,11 +9,7 @@ public interface LeagueRepository extends JpaRepository<League, Long> {
 
     League findFirstById(Long id);
 
-    League findLeagueByName(String name);
-
     League findLeagueByLocationNameAndName(String locationName, String name);
-
-    List<League> findLeaguesByLocation_IdOrderByIdAsc(Long locationId);
 
     List<League> findLeaguesByLocationNameOrderById(String shortName);
 

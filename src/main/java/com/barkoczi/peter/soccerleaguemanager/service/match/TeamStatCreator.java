@@ -49,8 +49,10 @@ public class TeamStatCreator {
     private void setTeamsByGroup(List<Match> matches, List<TeamStat> result) {
         Set<Team> teams = new HashSet<>();
         for (Match match : matches) {
-            teams.add(match.getTeams().get(0));
-            teams.add(match.getTeams().get(1));
+            if (!match.getTeam2().equals("free")) {
+                teams.add(match.getTeams().get(0));
+                teams.add(match.getTeams().get(1));
+            }
         }
         for (Team team : teams) {
             TeamStat temp = TeamStat.builder().team(team.getName()).build();

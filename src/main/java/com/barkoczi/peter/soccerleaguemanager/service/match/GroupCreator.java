@@ -76,25 +76,39 @@ public class GroupCreator {
             List<Match> roundMatches = new ArrayList<>();
             if (league != null) time = eliminationCreator.setTime(startTime);
             for (List<String> pair : round.getValue()) {
-                Match tempMatch = Match.builder()
-                        .cup(cup)
-                        .league(league)
-                        .date(date)
-                        .time(df.format(time.getTime()))
-                        .team1(pair.get(0))
-                        .team2(pair.get(1))
-                        .score1(0)
-                        .score2(0)
-                        .scorer1("")
-                        .scorer2("")
-                        .card1("")
-                        .card2("")
-                        .finished(false)
-                        .matchType(type + " - round - " + round.getKey())
-                        .build();
+                Match tempMatch;
+                if (pair.contains("free")) {
+                    tempMatch = Match.builder()
+                            .cup(cup)
+                            .league(league)
+                            .team1(pair.get(0).equals("free") ? pair.get(1) : pair.get(0))
+                            .team2("free")
+                            .matchType(type + " - round - " + round.getKey() + "free")
+                            .build();
+                    roundMatches.add(0, tempMatch);
+                } else {
+                    tempMatch = Match.builder()
+                            .cup(cup)
+                            .league(league)
+                            .date(date)
+                            .time(df.format(time.getTime()))
+                            .team1(pair.get(0))
+                            .team2(pair.get(1))
+                            .score1(0)
+                            .score2(0)
+                            .scorer1("")
+                            .scorer2("")
+                            .card1("")
+                            .card2("")
+                            .finished(false)
+                            .matchType(type + " - round - " + round.getKey())
+                            .build();
 
-                roundMatches.add(tempMatch);
-                time.add(Calendar.MINUTE, Integer.parseInt(matchTime) + 5);
+                    roundMatches.add(tempMatch);
+                    time.add(Calendar.MINUTE, Integer.parseInt(matchTime) + 5);
+                }
+
+
             }
             if (league != null) {
                 actualDay = setGameDay(gameDays, actualDay);
@@ -122,12 +136,14 @@ public class GroupCreator {
     private Map<String, List<List<String>>> createGroupSchedule(List<String> teams, Random random, Cup cup) {
         Map<String, List<List<String>>> allRound = new TreeMap<>();
         List<List<String>> round = new ArrayList<>();
+        List<String> tempTeams = new ArrayList<>(teams);
 
-        for (int h = 0; h < teams.size() - 1; h++) {
+        if (teams.size() % 2 != 0) tempTeams.add("free");
+        for (int h = 0; h < tempTeams.size() - 1; h++) {
             round.clear();
-            teams = setupTeamList(teams);
-            for (int i = 0, j = teams.size() - 1; i < teams.size() / 2; i++, j--) {
-                setHomeOrAway(teams, random, round, i, j);
+            tempTeams = setupTeamList(tempTeams);
+            for (int i = 0, j = tempTeams.size() - 1; i < tempTeams.size() / 2; i++, j--) {
+                setHomeOrAway(tempTeams, random, round, i, j);
             }
             String roundIndex = new DecimalFormat("00").format(h + 1);
             allRound.put(roundIndex, new ArrayList<>(shakeTeams(round, random)));
@@ -140,6 +156,7 @@ public class GroupCreator {
 
     private void setHomeOrAway(List<String> teams, Random random, List<List<String>> round, int i, int j) {
         List<String> homeAway = new ArrayList<>(Arrays.asList("home", "away"));
+        if (teams.size() % 2 != 0) round.add(List.of(teams.get(teams.size() / 2), "free"));
         if (homeAway.get(random.nextInt(homeAway.size())).equals("home")) {
             round.add(Arrays.asList(teams.get(i), teams.get(j)));
         } else {

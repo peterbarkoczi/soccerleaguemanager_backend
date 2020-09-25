@@ -30,8 +30,8 @@ public class MatchController {
     }
 
     @GetMapping("/match/get_league_matches")
-    public List<Match> getLeagueMatches(@RequestParam String leagueName) {
-        return matchService.getMatchesByLeagueName(leagueName);
+    public List<Match> getLeagueMatches(@RequestParam String locationName, String leagueName) {
+        return matchService.getMatchesByLeagueName(locationName, leagueName);
     }
 
     @GetMapping("/match/create_qualifiers_next_round")
