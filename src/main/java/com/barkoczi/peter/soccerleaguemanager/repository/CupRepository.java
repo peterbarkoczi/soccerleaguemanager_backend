@@ -11,6 +11,8 @@ public interface CupRepository extends JpaRepository<Cup, Long> {
 
     Cup findCupById(Long id);
 
-    List<Cup> findCupsByLocationIdOrderByIdAsc(Long locationId);
+    Cup findCupByLocationNameAndName(String locationName, String cupName);
+
+    List<Cup> findCupsByLocationNameOrderById(String locationName);
 
 }
