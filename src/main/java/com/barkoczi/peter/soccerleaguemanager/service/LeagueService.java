@@ -58,8 +58,4 @@ public class LeagueService {
         return newLeague;
     }
 
-    public List<League> getLeagueListByLocationId(Long locationId) {
-        return leagueRepository.findLeaguesByLocation_IdOrderByIdAsc(locationId);
-    }
-
 }
