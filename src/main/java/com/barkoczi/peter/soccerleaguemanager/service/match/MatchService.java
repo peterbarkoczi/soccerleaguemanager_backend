@@ -52,7 +52,6 @@ public class MatchService {
 
     public List<List<Match>> createQualifiersNextRound(Long cupId, String matchType) {
         if (!matchRepository.existsMatchByCupIdAndMatchType(cupId, setMatchType(matchType))) {
-            System.out.println("create new round");
             List<String> teams = eliminationCreator.createPairs(matchType, matchRepository.findAllByCupIdAndMatchType(cupId, matchType));
             Cup cup = cupRepository.findCupById(cupId);
             String matchTime = cup.getMatchTime();

@@ -42,10 +42,6 @@ public class SemiFinalCreator {
     private List<String> createSemiFinalPairs(Long cupId) {
         List<TeamStat> group1 = teamStatCreator.createTeamStat(cupId, null, "group1");
         List<TeamStat> group2 = teamStatCreator.createTeamStat(cupId, null, "group2");
-
-        System.out.println("group1: " + group1);
-        System.out.println("group2: " + group2);
-
         return Stream.of(
                 group1.get(0).getTeam(), group2.get(1).getTeam(),
                 group1.get(1).getTeam(), group2.get(0).getTeam())
