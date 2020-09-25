@@ -8,11 +8,13 @@ import java.util.List;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-    List<Team> findTeamsByLocation_IdOrderByNameAsc(Long id);
+    List<Team> findTeamsByLocationNameOrderByNameAsc(String locationName);
 
     List<Team> findTeamsByLeagueOrderByNameAsc(League league);
 
     Team findFirstById(Long id);
 
     Team findByName(String name);
+
+    Team findTeamByLocationNameAndName(String locationName, String name);
 }
