@@ -1,11 +1,13 @@
 package com.barkoczi.peter.soccerleaguemanager.service.match;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Cup;
+import com.barkoczi.peter.soccerleaguemanager.entity.League;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
 import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
 import com.barkoczi.peter.soccerleaguemanager.model.TeamStat;
 import com.barkoczi.peter.soccerleaguemanager.repository.CupRepository;
+import com.barkoczi.peter.soccerleaguemanager.repository.LeagueRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.TeamRepository;
 import lombok.AllArgsConstructor;
@@ -40,6 +42,12 @@ public class MatchService {
 
     @Autowired
     private SemiFinalCreator semiFinalCreator;
+
+    @Autowired
+    private LeagueRepository leagueRepository;
+
+    @Autowired
+    private TeamStatCreator teamStatCreator;
 
 
     public List<List<Match>> createQualifierMatches(List<String> teamsList, Cup cup, String startTime, String matchTime, String matchType) {
@@ -181,4 +189,34 @@ public class MatchService {
         return null;
     }
 
+    public List<Match> getMatchesByLeagueName(String leagueName) {
+        if (leagueName == null) return null;
+        League league = leagueRepository.findLeagueByName(leagueName);
+        return matchRepository.findMatchesByLeagueId(league.getId());
+    }
+
+    public List<Match> getQualifiersByLocationAndCupName(String locationName, String cupName, String matchType) {
+        Cup cup = cupRepository.findCupByLocationNameAndName(locationName, cupName);
+        return matchRepository.findMatchesByCupIdAndMatchTypeContains(cup.getId(), matchType);
+    }
+
+    public List<TeamStat> getTeamStat(String locationName, String cupName, String leagueName, String group) {
+        if (leagueName != null) {
+            League league = leagueRepository.findLeagueByLocationNameAndName(locationName, leagueName);
+            return teamStatCreator.createTeamStat(null, league.getId(), group);
+        } else {
+            Cup cup = cupRepository.findCupByLocationNameAndName(locationName, cupName);
+            return teamStatCreator.createTeamStat(cup.getId(), null, group);
+        }
+
+    }
+
+    public List<Match> createCupSemifinals(String locationName, String cupName, String matchType) {
+        Cup cup = cupRepository.findCupByLocationNameAndName(locationName, cupName);
+        List<List<Match>> result = createSemiFinals(cup.getId(), matchType);
+        if (result != null) {
+            return result.get(0);
+        }
+        return null;
+    }
 }

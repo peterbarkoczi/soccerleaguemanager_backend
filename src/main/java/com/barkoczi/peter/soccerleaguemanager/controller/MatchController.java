@@ -25,13 +25,13 @@ public class MatchController {
     private TeamStatCreator teamStatCreator;
 
     @GetMapping("/match/get_matches")
-    public List<Match> getQualifiers(@RequestParam Long cupId, String matchType) {
-        return matchRepository.findMatchesByCupIdAndMatchTypeContains(cupId, matchType);
+    public List<Match> getQualifiers(@RequestParam String locationName, String cupName, String matchType) {
+        return matchService.getQualifiersByLocationAndCupName(locationName, cupName, matchType);
     }
 
     @GetMapping("/match/get_league_matches")
-    public List<Match> getLeagueMatches(@RequestParam Long leagueId) {
-        return matchRepository.findMatchesByLeagueId(leagueId);
+    public List<Match> getLeagueMatches(@RequestParam String leagueName) {
+        return matchService.getMatchesByLeagueName(leagueName);
     }
 
     @GetMapping("/match/create_qualifiers_next_round")
@@ -40,18 +40,14 @@ public class MatchController {
     }
 
     @GetMapping("/match/create_semi_finals")
-    public List<Match> createSemiFinals(@RequestParam Long cupId, String matchType) {
-        List<List<Match>> result = matchService.createSemiFinals(cupId, matchType);
-        if (result != null) {
-            System.out.println(result);
-            return result.get(0);
-        }
-        return null;
+    public List<Match> createSemiFinals(@RequestParam String locationName, String cupName, String matchType) {
+        if (locationName == null || cupName == null) return null;
+        return matchService.createCupSemifinals(locationName, cupName, matchType);
     }
 
     @GetMapping("/match/getGroupStat")
-    public List<TeamStat> getTeamStat(@RequestParam Long cupId, Long leagueId, String group) {
-        return teamStatCreator.createTeamStat(cupId, leagueId, group);
+    public List<TeamStat> getTeamStat(@RequestParam String locationName, String cupName, String leagueName, String group) {
+        return matchService.getTeamStat(locationName, cupName, leagueName, group);
     }
 
     /*
