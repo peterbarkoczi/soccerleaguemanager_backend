@@ -1,6 +1,7 @@
 package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Player;
+import com.barkoczi.peter.soccerleaguemanager.model.PlayerDetails;
 import com.barkoczi.peter.soccerleaguemanager.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,11 @@ public class PlayerController {
     @GetMapping("/player/listByName/{teamName}")
     public List<Player> getPlayersByName(@PathVariable("teamName") String teamName) {
         return playerService.getPlayersByTeamName(teamName);
+    }
+
+    @GetMapping("/player/get_player_details")
+    public PlayerDetails getPlayerDetails(@RequestParam("playerId") Long playerId) {
+        return playerService.getPlayerDetails(playerId);
     }
 
     @PostMapping("/player/add_player/{locationName}-{teamName}")

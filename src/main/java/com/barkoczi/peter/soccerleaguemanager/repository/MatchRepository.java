@@ -1,12 +1,14 @@
 package com.barkoczi.peter.soccerleaguemanager.repository;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
+import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface MatchRepository extends JpaRepository<Match, Long> {
@@ -21,11 +23,11 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     List<Match> findMatchesByCupIdAndMatchTypeContains(Long cupId, String matchType);
 
-    List<Match> findMatchesByLeagueName(String leagueName);
-
     List<Match> findMatchesByLeagueId(Long leagueId);
 
     boolean existsMatchByCupIdAndMatchType(Long cupId, String matchType);
+
+    Set<Match> findDistinctByTeamsIn(Set<Team> teams);
 
     @Query("update Match set score1 = :score, scorer1 = :scorer where id = :id")
     @Modifying(clearAutomatically = true)
