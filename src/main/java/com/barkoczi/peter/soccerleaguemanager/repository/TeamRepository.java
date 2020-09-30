@@ -1,16 +1,17 @@
 package com.barkoczi.peter.soccerleaguemanager.repository;
 
-import com.barkoczi.peter.soccerleaguemanager.entity.League;
+import com.barkoczi.peter.soccerleaguemanager.entity.Player;
 import com.barkoczi.peter.soccerleaguemanager.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
     List<Team> findTeamsByLocationNameOrderByNameAsc(String locationName);
 
-    List<Team> findTeamsByLeagueOrderByNameAsc(League league);
+    Set<Team> findTeamsByPlayers(Player player);
 
     Team findFirstById(Long id);
 

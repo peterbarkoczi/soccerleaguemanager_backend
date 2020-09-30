@@ -24,10 +24,10 @@ public class TeamController {
         return teamRepository.findTeamsByLocationNameOrderByNameAsc(locationName);
     }
 
-    @GetMapping("/teams/{leagueId}")
-    public List<Team> getTeamsByLeagueId(@PathVariable("leagueId") Long leagueId) {
-        return teamService.getTeamsByLeague(leagueId);
-    }
+//    @GetMapping("/teams/{leagueId}")
+//    public List<Team> getTeamsByLeagueId(@PathVariable("leagueId") Long leagueId) {
+//        return teamService.getTeamsByLeague(leagueId);
+//    }
 
     @PostMapping("/teams/add_team")
     public Team addNewTeam(@RequestBody TeamDetails teamDetails) {
