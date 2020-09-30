@@ -34,6 +34,13 @@ public class Team {
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "teams")
     private List<Player> players;
 
+    @PreRemove
+    private void removeTeamsFromMatches() {
+        for (Player player : players) {
+            player.getTeams().remove(this);
+        }
+    }
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore
