@@ -1,19 +1,15 @@
 package com.barkoczi.peter.soccerleaguemanager.service;
 
-import com.barkoczi.peter.soccerleaguemanager.entity.Player;
-import com.barkoczi.peter.soccerleaguemanager.entity.Team;
-import com.barkoczi.peter.soccerleaguemanager.repository.PlayerRepository;
-import com.barkoczi.peter.soccerleaguemanager.repository.TeamRepository;
+import com.barkoczi.peter.soccerleaguemanager.entity.*;
+import com.barkoczi.peter.soccerleaguemanager.model.PlayerDetails;
+import com.barkoczi.peter.soccerleaguemanager.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +22,16 @@ public class PlayerService {
 
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    private LeagueRepository leagueRepository;
+
+    @Autowired
+    private MatchRepository matchRepository;
+
+    @Autowired
+    private CupRepository cupRepository;
+
 
     public Player addPlayer(String locationName, String teamName, Player player) {
 
@@ -51,4 +57,28 @@ public class PlayerService {
     public List<Player> getPlayersByTeamName(String teamName) {
         return playerRepository.findPlayersByTeams(teamRepository.findByName(teamName));
     }
+
+    public PlayerDetails getPlayerDetails(Long playerId) {
+        Player player = playerRepository.findPlayerById(playerId);
+        Set<Team> teams = teamRepository.findTeamsByPlayers(player);
+        Set<Long> leagueIds = new HashSet<>(), cupIds = new HashSet<>();
+        Set<Match> matches = matchRepository.findDistinctByTeamsIn(teams);
+
+        setLeagueAndCupId(matches, leagueIds, cupIds);
+
+        return PlayerDetails.builder()
+                .player(player)
+                .teams(teams)
+                .leagues(leagueRepository.findLeaguesByIdIn(leagueIds))
+                .cups(cupRepository.findCupsByIdIn(cupIds))
+                .build();
+    }
+
+    private void setLeagueAndCupId(Set<Match> matches, Set<Long> leagueIds, Set<Long> cupIds) {
+        for (Match match : matches) {
+            if (match.getLeague() != null) leagueIds.add(match.getLeague().getId());
+            if (match.getCup() != null) cupIds.add(match.getCup().getId());
+        }
+    }
+
 }
