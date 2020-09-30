@@ -40,7 +40,6 @@ public class TeamService {
         Team newTeam = Team.builder()
                 .name(teamDetails.getTeamName())
                 .location(locationRepository.findLocationByName(teamDetails.getLocationName()))
-                .league(new ArrayList<>())
                 .matches(new ArrayList<>())
                 .build();
 
@@ -50,9 +49,5 @@ public class TeamService {
 
     public void deleteTeam(Long id) {
         teamRepository.deleteById(id);
-    }
-
-    public List<Team> getTeamsByLeague(Long leagueId) {
-        return teamRepository.findTeamsByLeagueOrderByNameAsc(leagueRepository.findFirstById(leagueId));
     }
 }

@@ -35,10 +35,6 @@ public class League {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Location location;
 
-    @Builder.Default
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "league")
-    private List<Team> teams = new ArrayList<>();
-
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "league", orphanRemoval = true)
     private List<Match> matches = new ArrayList<>();
 

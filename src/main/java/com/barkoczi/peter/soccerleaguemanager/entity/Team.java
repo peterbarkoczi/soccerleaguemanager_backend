@@ -27,12 +27,6 @@ public class Team {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    private List<League> league = new ArrayList<>();
-
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Location location;
