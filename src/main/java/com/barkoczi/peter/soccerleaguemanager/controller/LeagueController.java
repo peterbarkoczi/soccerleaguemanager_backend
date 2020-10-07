@@ -28,4 +28,10 @@ public class LeagueController {
     public League addNewLeague(@RequestBody LeagueDetails leagueDetails) {
         return leagueService.createAndSaveNewLeague(leagueDetails);
     }
+
+    @DeleteMapping(value = "/league/{leagueId}")
+    public String deleteLeague(@PathVariable("leagueId") Long leagueId) {
+        leagueService.deleteLeague(leagueId);
+        return "League deleted";
+    }
 }
