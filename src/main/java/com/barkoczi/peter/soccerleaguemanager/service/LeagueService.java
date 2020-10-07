@@ -58,4 +58,7 @@ public class LeagueService {
         return newLeague;
     }
 
+    public void deleteLeague(Long leagueId) {
+        leagueRepository.delete(leagueRepository.findLeagueById(leagueId));
+    }
 }

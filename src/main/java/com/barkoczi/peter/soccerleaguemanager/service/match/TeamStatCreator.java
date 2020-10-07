@@ -40,9 +40,9 @@ public class TeamStatCreator {
 
     private List<Match> getMatchesByGroup(Long cupId, Long leagueId, String matchType) {
         if (leagueId != null) {
-            return matchRepository.findMatchesByLeagueId(leagueId);
+            return matchRepository.findMatchesByLeagueIdOrderById(leagueId);
         } else {
-            return matchRepository.findMatchesByCupIdAndMatchTypeContains(cupId, matchType);
+            return matchRepository.findMatchesByCupIdAndMatchTypeContainsOrderById(cupId, matchType);
         }
     }
 
