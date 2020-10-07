@@ -194,12 +194,12 @@ public class MatchService {
     public List<Match> getMatchesByLeagueName(String locationName, String leagueName) {
         if (leagueName == null || locationName == null) return null;
         League league = leagueRepository.findLeagueByLocationNameAndName(locationName, leagueName);
-        return matchRepository.findMatchesByLeagueId(league.getId());
+        return matchRepository.findMatchesByLeagueIdOrderById(league.getId());
     }
 
     public List<Match> getQualifiersByLocationAndCupName(String locationName, String cupName, String matchType) {
         Cup cup = cupRepository.findCupByLocationNameAndName(locationName, cupName);
-        return matchRepository.findMatchesByCupIdAndMatchTypeContains(cup.getId(), matchType);
+        return matchRepository.findMatchesByCupIdAndMatchTypeContainsOrderById(cup.getId(), matchType);
     }
 
     public List<TeamStat> getTeamStat(String locationName, String cupName, String leagueName, String group) {
