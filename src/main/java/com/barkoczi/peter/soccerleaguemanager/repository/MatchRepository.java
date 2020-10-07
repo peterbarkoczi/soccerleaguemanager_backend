@@ -21,9 +21,9 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     List<Match> findAllByCupIdAndMatchType(Long cupId, String matchType);
 
-    List<Match> findMatchesByCupIdAndMatchTypeContains(Long cupId, String matchType);
+    List<Match> findMatchesByCupIdAndMatchTypeContainsOrderById(Long cupId, String matchType);
 
-    List<Match> findMatchesByLeagueId(Long leagueId);
+    List<Match> findMatchesByLeagueIdOrderById(Long leagueId);
 
     boolean existsMatchByCupIdAndMatchType(Long cupId, String matchType);
 

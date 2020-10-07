@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface LeagueRepository extends JpaRepository<League, Long> {
 
-    League findFirstById(Long id);
+    League findLeagueById(Long id);
 
     League findLeagueByLocationNameAndName(String locationName, String name);
 
