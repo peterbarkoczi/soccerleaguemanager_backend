@@ -81,4 +81,7 @@ public class PlayerService {
         }
     }
 
+    public void deletePlayer(Long playerId) {
+        playerRepository.delete(playerRepository.findPlayerById(playerId));
+    }
 }

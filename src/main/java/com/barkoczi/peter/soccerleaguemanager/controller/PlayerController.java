@@ -37,4 +37,10 @@ public class PlayerController {
                             @RequestBody Player player) {
         return playerService.addPlayer(locationName, teamName, player);
     }
+
+    @DeleteMapping(value = "/player/{playerId}")
+    public String deletePlayer(@PathVariable("playerId") Long playerId) {
+        playerService.deletePlayer(playerId);
+        return "Player deleted";
+    }
 }
