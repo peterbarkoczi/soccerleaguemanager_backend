@@ -1,4 +1,4 @@
-package com.barkoczi.peter.soccerleaguemanager.service;
+package com.barkoczi.peter.soccerleaguemanager.service.player;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.*;
 import com.barkoczi.peter.soccerleaguemanager.model.PlayerDetails;
@@ -46,7 +46,6 @@ public class PlayerService {
                 .name(player.getName())
                 .teams(teams)
                 .birthDate(player.getBirthDate())
-                .goals(0L)
                 .build();
 
         playerRepository.saveAndFlush(newPlayer);
