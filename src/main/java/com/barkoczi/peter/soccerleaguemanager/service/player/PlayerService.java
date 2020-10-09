@@ -1,7 +1,8 @@
-package com.barkoczi.peter.soccerleaguemanager.service;
+package com.barkoczi.peter.soccerleaguemanager.service.player;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.*;
 import com.barkoczi.peter.soccerleaguemanager.model.PlayerDetails;
+import com.barkoczi.peter.soccerleaguemanager.model.PlayerStat;
 import com.barkoczi.peter.soccerleaguemanager.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,9 @@ public class PlayerService {
     @Autowired
     private CupRepository cupRepository;
 
+    @Autowired
+    private PlayerStatCreator playerStatCreator;
+
 
     public Player addPlayer(String locationName, String teamName, Player player) {
 
@@ -42,7 +46,6 @@ public class PlayerService {
                 .name(player.getName())
                 .teams(teams)
                 .birthDate(player.getBirthDate())
-                .goals(0L)
                 .build();
 
         playerRepository.saveAndFlush(newPlayer);
@@ -54,8 +57,18 @@ public class PlayerService {
         return playerRepository.findPlayersByTeams(teamRepository.findFirstById(teamId));
     }
 
-    public List<Player> getPlayersByTeamName(String teamName) {
-        return playerRepository.findPlayersByTeams(teamRepository.findByName(teamName));
+    public List<Player> getPlayersByTeamName(String teamName, String locationName) {
+        return playerRepository.findPlayersByTeams(teamRepository.findTeamByLocationNameAndName(locationName, teamName));
+    }
+
+    public List<PlayerStat> getPlayersAndStatsByTeamName(String teamName, String locationName, String leagueName) {
+        List<PlayerStat> playersAndStats = new ArrayList<>();
+        List<Player> players = playerRepository.findPlayersByTeams(teamRepository.findTeamByLocationNameAndName(locationName, teamName));
+        League league = leagueRepository.findLeagueByLocationNameAndName(locationName, leagueName);
+        for (Player player : players) {
+            playersAndStats.add(playerStatCreator.getPlayerStat(league, player));
+        }
+        return playersAndStats;
     }
 
     public PlayerDetails getPlayerDetails(Long playerId) {

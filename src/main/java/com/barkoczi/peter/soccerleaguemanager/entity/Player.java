@@ -28,9 +28,6 @@ public class Player {
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
-    private Long goals;
-
-
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore
