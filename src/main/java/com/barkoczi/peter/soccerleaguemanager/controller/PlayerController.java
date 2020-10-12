@@ -12,43 +12,44 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/player")
 public class PlayerController {
 
     @Autowired
     private PlayerService playerService;
 
 
-    @GetMapping("/player/list/{teamId}")
+    @GetMapping("/list/{teamId}")
     public List<Player> getPlayersById(@PathVariable("teamId") Long teamId) {
         return playerService.getPlayersByTeamId(teamId);
     }
 
-    @GetMapping("/player/get_players_by_team/{teamName}")
+    @GetMapping("/get_players_by_team/{teamName}")
     public List<Player> getPlayersByTeam(@PathVariable("teamName") String teamName,
                                          @RequestParam("locationName") String locationName) {
         return playerService.getPlayersByTeamName(teamName, locationName);
     }
 
-    @GetMapping("/player/get_players_and_stats_by_team/{teamName}")
+    @GetMapping("/get_players_and_stats_by_team/{teamName}")
     public List<PlayerStat> getPlayersAndStatsByTeam(@PathVariable("teamName") String teamName,
                                                             @RequestParam("locationName") String locationName,
                                                             @RequestParam("leagueName") String leagueName) {
         return playerService.getPlayersAndStatsByTeamName(teamName, locationName, leagueName);
     }
 
-    @GetMapping("/player/get_player_details")
+    @GetMapping("/get_player_details")
     public PlayerDetails getPlayerDetails(@RequestParam("playerId") Long playerId) {
         return playerService.getPlayerDetails(playerId);
     }
 
-    @PostMapping("/player/add_player/{locationName}-{teamName}")
+    @PostMapping("/add_player/{locationName}-{teamName}")
     public Player addPlayer(@PathVariable("locationName") String locationName,
                             @PathVariable("teamName") String teamName,
                             @RequestBody Player player) {
         return playerService.addPlayer(locationName, teamName, player);
     }
 
-    @DeleteMapping(value = "/player/{playerId}")
+    @DeleteMapping(value = "/{playerId}")
     public String deletePlayer(@PathVariable("playerId") Long playerId) {
         playerService.deletePlayer(playerId);
         return "Player deleted";

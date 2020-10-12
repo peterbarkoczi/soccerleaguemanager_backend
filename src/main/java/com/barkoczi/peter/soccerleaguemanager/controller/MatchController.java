@@ -13,6 +13,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/match")
 public class MatchController {
 
     @Autowired
@@ -24,28 +25,28 @@ public class MatchController {
     @Autowired
     private TeamStatCreator teamStatCreator;
 
-    @GetMapping("/match/get_matches")
+    @GetMapping("/get_matches")
     public List<Match> getQualifiers(@RequestParam String locationName, String cupName, String matchType) {
         return matchService.getQualifiersByLocationAndCupName(locationName, cupName, matchType);
     }
 
-    @GetMapping("/match/get_league_matches")
+    @GetMapping("/get_league_matches")
     public List<Match> getLeagueMatches(@RequestParam String locationName, String leagueName) {
         return matchService.getMatchesByLeagueName(locationName, leagueName);
     }
 
-    @GetMapping("/match/create_qualifiers_next_round")
+    @GetMapping("/create_qualifiers_next_round")
     public List<Match> createQualifiersNextRound(@RequestParam Long cupId, String matchType) {
         return matchService.createQualifiersNextRound(cupId, matchType).get(0);
     }
 
-    @GetMapping("/match/create_semi_finals")
+    @GetMapping("/create_semi_finals")
     public List<Match> createSemiFinals(@RequestParam String locationName, String cupName, String matchType) {
         if (locationName == null || cupName == null) return null;
         return matchService.createCupSemifinals(locationName, cupName, matchType);
     }
 
-    @GetMapping("/match/getGroupStat")
+    @GetMapping("/getGroupStat")
     public List<TeamStat> getTeamStat(@RequestParam String locationName, String cupName, String leagueName, String group) {
         return matchService.getTeamStat(locationName, cupName, leagueName, group);
     }
@@ -54,17 +55,17 @@ public class MatchController {
         Update
      */
 
-    @PostMapping("/match/update_score")
+    @PostMapping("/update_score")
     public void updateScore(@RequestBody Match match) {
         matchService.updateScore(match);
     }
 
-    @PostMapping("match/update_finished")
+    @PostMapping("/update_finished")
     public void updateFinished(@RequestBody Match match) {
         matchService.setFinished(match);
     }
 
-    @PostMapping("/match/update_card")
+    @PostMapping("/update_card")
     public void updateCard(@RequestBody CardDetails cardDetails) {
         matchService.updateCard(cardDetails);
     }

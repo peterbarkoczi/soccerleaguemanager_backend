@@ -10,6 +10,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/location")
 public class LocationController {
 
     @Autowired
@@ -18,17 +19,17 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping("/location/list")
+    @GetMapping("/list")
     public List<Location> leagueList() {
         return locationRepository.findAll();
     }
 
-    @PostMapping("/location/add_location")
+    @PostMapping("/add_location")
     public Location addNewLocation(@RequestBody Location location) {
         return locationService.createAndSaveNewLocation(location);
     }
 
-    @DeleteMapping(value = "/location/{id}")
+    @DeleteMapping(value = "/{id}")
     public String deleteLocation(@PathVariable("id") Long id) {
         locationService.deleteLocation(id);
         return "Location deleted";

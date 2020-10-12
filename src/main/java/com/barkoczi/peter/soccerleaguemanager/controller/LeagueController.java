@@ -11,6 +11,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/league")
 public class LeagueController {
 
     @Autowired
@@ -19,17 +20,17 @@ public class LeagueController {
     @Autowired
     private LeagueRepository leagueRepository;
 
-    @GetMapping("/league/get_league_list/{locationName}")
+    @GetMapping("/get_league_list/{locationName}")
     public List<League> getLeagueListByShortName(@PathVariable("locationName") String locationName) {
         return leagueRepository.findLeaguesByLocationNameOrderById(locationName);
     }
 
-    @PostMapping("/league/create_league")
+    @PostMapping("/create_league")
     public League addNewLeague(@RequestBody LeagueDetails leagueDetails) {
         return leagueService.createAndSaveNewLeague(leagueDetails);
     }
 
-    @DeleteMapping(value = "/league/{leagueId}")
+    @DeleteMapping(value = "/{leagueId}")
     public String deleteLeague(@PathVariable("leagueId") Long leagueId) {
         leagueService.deleteLeague(leagueId);
         return "League deleted";

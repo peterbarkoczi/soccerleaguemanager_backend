@@ -12,6 +12,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/cups")
 public class CupController {
 
     @Autowired
@@ -21,27 +22,27 @@ public class CupController {
     private CupRepository cupRepository;
 
 
-    @PostMapping("/cups/create_cup")
+    @PostMapping("/create_cup")
     public Cup createNewCup(@RequestBody CupDetails cupDetails) {
         return cupService.createAndSaveNewCup(cupDetails);
     }
 
-    @GetMapping("/cups/get_matches")
+    @GetMapping("/get_matches")
     public Cup getCup(@RequestParam Long cupId) {
         return cupRepository.findCupById(cupId);
     }
 
-    @GetMapping("/cups/list")
+    @GetMapping("/list")
     public List<Cup> getCupsList(@RequestParam String locationName) {
         return cupRepository.findCupsByLocationNameOrderById(locationName);
     }
 
-    @GetMapping("/cups/get_cup_by_name")
+    @GetMapping("/get_cup_by_name")
     public Cup getCupByName(@RequestParam String cupName) {
         return cupRepository.findCupByName(cupName);
     }
 
-    @DeleteMapping(value = "/cups/{id}")
+    @DeleteMapping(value = "/{id}")
     public String deleteCup(@PathVariable("id") Long id) {
         cupService.deleteCup(id);
         return "Cup deleted";

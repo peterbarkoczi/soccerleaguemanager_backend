@@ -11,6 +11,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/teams")
 public class TeamController {
 
     @Autowired
@@ -19,22 +20,17 @@ public class TeamController {
     @Autowired
     TeamService teamService;
 
-    @GetMapping("/teams")
+    @GetMapping("")
     public List<Team> getLocationTeams(@RequestParam() String locationName) {
         return teamRepository.findTeamsByLocationNameOrderByNameAsc(locationName);
     }
 
-//    @GetMapping("/teams/{leagueId}")
-//    public List<Team> getTeamsByLeagueId(@PathVariable("leagueId") Long leagueId) {
-//        return teamService.getTeamsByLeague(leagueId);
-//    }
-
-    @PostMapping("/teams/add_team")
+    @PostMapping("/add_team")
     public Team addNewTeam(@RequestBody TeamDetails teamDetails) {
         return teamService.addTeam(teamDetails);
     }
 
-    @DeleteMapping(value = "/teams/{id}")
+    @DeleteMapping(value = "/{id}")
     public String deleteCup(@PathVariable("id") Long id) {
         teamService.deleteTeam(id);
         return "Team deleted";
