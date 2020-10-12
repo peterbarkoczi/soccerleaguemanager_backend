@@ -1,7 +1,7 @@
 package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Team;
-import com.barkoczi.peter.soccerleaguemanager.model.TeamDetails;
+import com.barkoczi.peter.soccerleaguemanager.model.team.TeamDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.TeamRepository;
 import com.barkoczi.peter.soccerleaguemanager.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;

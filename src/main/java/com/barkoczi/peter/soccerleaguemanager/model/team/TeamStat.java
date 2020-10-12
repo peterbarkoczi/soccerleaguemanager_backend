@@ -1,4 +1,4 @@
-package com.barkoczi.peter.soccerleaguemanager.model;
+package com.barkoczi.peter.soccerleaguemanager.model.team;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,7 +2,7 @@ package com.barkoczi.peter.soccerleaguemanager.service.match;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
 import com.barkoczi.peter.soccerleaguemanager.entity.Team;
-import com.barkoczi.peter.soccerleaguemanager.model.TeamStat;
+import com.barkoczi.peter.soccerleaguemanager.model.team.TeamStat;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.TeamRepository;
 import lombok.AllArgsConstructor;

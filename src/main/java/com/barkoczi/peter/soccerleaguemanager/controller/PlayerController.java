@@ -1,14 +1,13 @@
 package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Player;
-import com.barkoczi.peter.soccerleaguemanager.model.PlayerDetails;
-import com.barkoczi.peter.soccerleaguemanager.model.PlayerStat;
+import com.barkoczi.peter.soccerleaguemanager.model.player.PlayerDetails;
+import com.barkoczi.peter.soccerleaguemanager.model.player.PlayerStat;
 import com.barkoczi.peter.soccerleaguemanager.service.player.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin
 @RestController

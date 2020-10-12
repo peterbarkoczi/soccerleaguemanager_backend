@@ -3,7 +3,7 @@ package com.barkoczi.peter.soccerleaguemanager.service.player;
 import com.barkoczi.peter.soccerleaguemanager.entity.League;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
 import com.barkoczi.peter.soccerleaguemanager.entity.Player;
-import com.barkoczi.peter.soccerleaguemanager.model.PlayerStat;
+import com.barkoczi.peter.soccerleaguemanager.model.player.PlayerStat;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.PlayerRepository;
 import lombok.AllArgsConstructor;

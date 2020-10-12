@@ -3,7 +3,7 @@ package com.barkoczi.peter.soccerleaguemanager.service;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Cup;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
-import com.barkoczi.peter.soccerleaguemanager.model.CupDetails;
+import com.barkoczi.peter.soccerleaguemanager.model.cup.CupDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.CupRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.LocationRepository;
 import com.barkoczi.peter.soccerleaguemanager.service.match.MatchService;
