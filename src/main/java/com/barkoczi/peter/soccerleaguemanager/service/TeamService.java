@@ -49,4 +49,9 @@ public class TeamService {
     public void deleteTeam(Long id) {
         teamRepository.deleteById(id);
     }
+
+    public Long getTeamIdByName(String locationName, String teamName) {
+        Team team = teamRepository.findTeamByLocationNameAndName(locationName, teamName);
+        return team.getId();
+    }
 }
