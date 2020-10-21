@@ -1,4 +1,4 @@
-package com.barkoczi.peter.soccerleaguemanager.model;
+package com.barkoczi.peter.soccerleaguemanager.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCredentials {
+public class SigninCredentials {
 
     private String username;
     private String password;
