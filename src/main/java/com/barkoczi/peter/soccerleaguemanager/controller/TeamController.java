@@ -30,6 +30,12 @@ public class TeamController {
         return teamRepository.findTeamsByLocationNameOrderByNameAsc(locationName);
     }
 
+    @GetMapping("/get_teamId")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Long getTeamId(@RequestParam("locationName") String locationName, @RequestParam("teamName") String teamName) {
+        return teamService.getTeamIdByName(locationName, teamName);
+    }
+
     @PostMapping("/add_team")
     public Team addNewTeam(@RequestBody TeamDetails teamDetails) {
         return teamService.addTeam(teamDetails);
