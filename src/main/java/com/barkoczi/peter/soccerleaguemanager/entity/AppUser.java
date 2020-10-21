@@ -25,12 +25,11 @@ public class AppUser {
 
     @NotEmpty
     @Column(unique = true)
-    String username;
+    private String username;
 
     @NotEmpty
-    String password;
+    private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    private String role;
+    private Long teamId;
 }
