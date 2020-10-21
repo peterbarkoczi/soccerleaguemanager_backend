@@ -20,6 +20,11 @@ public class TeamController {
     @Autowired
     TeamService teamService;
 
+    @GetMapping("/all")
+    public List<Team> getAllTeam() {
+        return teamRepository.findAll();
+    }
+
     @GetMapping("")
     public List<Team> getLocationTeams(@RequestParam() String locationName) {
         return teamRepository.findTeamsByLocationNameOrderByNameAsc(locationName);
