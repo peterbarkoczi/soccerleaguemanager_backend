@@ -1,25 +1,26 @@
 package com.barkoczi.peter.soccerleaguemanager.controller;
 
-import com.barkoczi.peter.soccerleaguemanager.model.UserCredentials;
-import com.barkoczi.peter.soccerleaguemanager.repository.UserRepository;
+import com.barkoczi.peter.soccerleaguemanager.entity.AppUser;
+import com.barkoczi.peter.soccerleaguemanager.model.user.SigninCredentials;
+import com.barkoczi.peter.soccerleaguemanager.model.user.SignupCredentials;
+import com.barkoczi.peter.soccerleaguemanager.repository.AppUserRepository;
 import com.barkoczi.peter.soccerleaguemanager.security.JwtTokenServices;
+import com.barkoczi.peter.soccerleaguemanager.service.AppUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -28,13 +29,16 @@ public class AuthController {
 
     private final JwtTokenServices jwtTokenServices;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenServices jwtTokenServices, UserRepository users) {
+    @Autowired
+    private AppUserService appUserService;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenServices jwtTokenServices, AppUserRepository users) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenServices = jwtTokenServices;
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody UserCredentials data) {
+    public ResponseEntity<?> signin(@RequestBody SigninCredentials data) {
         try {
             String username = data.getUsername();
 
@@ -46,17 +50,32 @@ public class AuthController {
                     .collect(Collectors.toList());
 
             String token = jwtTokenServices.createToken(username, roles);
+            Long teamId = appUserService.getTeamId(username);
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("roles", roles);
             model.put("token", token);
-
+            model.put("teamId", teamId);
             return ResponseEntity.ok(model);
-
         } catch (AuthenticationException e) {
 //            throw new BadCredentialsException("Invalid username/password supplied");
-            return ResponseEntity.badRequest().body("Nincs ilyen felhasználó");
+            return ResponseEntity.badRequest().body("Hibás felhasználónév vagy jelszó");
         }
     }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody SignupCredentials credentials) {
+        if (appUserService.isUserExists(credentials.getUsername())) {
+            return ResponseEntity.badRequest().body("Ez a felhasználónév már létezik");
+        }
+        appUserService.createAndSaveNewAppUser(credentials);
+        return ResponseEntity.ok("Sikeres regisztráció");
+    }
+
+    @GetMapping("/getUsers")
+    public List<AppUser> getUsers() {
+        return appUserService.getAllUser();
+    }
+
 }
