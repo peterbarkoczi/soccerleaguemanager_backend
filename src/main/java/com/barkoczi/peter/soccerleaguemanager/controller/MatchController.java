@@ -1,12 +1,13 @@
 package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
-import com.barkoczi.peter.soccerleaguemanager.model.CardDetails;
-import com.barkoczi.peter.soccerleaguemanager.model.TeamStat;
+import com.barkoczi.peter.soccerleaguemanager.model.match.CardDetails;
+import com.barkoczi.peter.soccerleaguemanager.model.team.TeamStat;
 import com.barkoczi.peter.soccerleaguemanager.repository.MatchRepository;
 import com.barkoczi.peter.soccerleaguemanager.service.match.TeamStatCreator;
 import com.barkoczi.peter.soccerleaguemanager.service.match.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,17 +56,19 @@ public class MatchController {
         Update
      */
 
-    @PostMapping("/update_score")
+    @PatchMapping("/update_score")
+    @PreAuthorize("hasAnyRole('admin', 'referee')")
     public void updateScore(@RequestBody Match match) {
         matchService.updateScore(match);
     }
 
-    @PostMapping("/update_finished")
+    @PatchMapping("/update_finished")
+    @PreAuthorize("hasRole('admin')")
     public void updateFinished(@RequestBody Match match) {
         matchService.setFinished(match);
     }
 
-    @PostMapping("/update_card")
+    @PatchMapping("/update_card")
     public void updateCard(@RequestBody CardDetails cardDetails) {
         matchService.updateCard(cardDetails);
     }

@@ -1,8 +1,8 @@
 package com.barkoczi.peter.soccerleaguemanager.service.player;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.*;
-import com.barkoczi.peter.soccerleaguemanager.model.PlayerDetails;
-import com.barkoczi.peter.soccerleaguemanager.model.PlayerStat;
+import com.barkoczi.peter.soccerleaguemanager.model.player.PlayerDetails;
+import com.barkoczi.peter.soccerleaguemanager.model.player.PlayerStat;
 import com.barkoczi.peter.soccerleaguemanager.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

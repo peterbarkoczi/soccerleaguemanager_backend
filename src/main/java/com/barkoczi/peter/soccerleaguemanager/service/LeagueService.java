@@ -2,7 +2,7 @@ package com.barkoczi.peter.soccerleaguemanager.service;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.League;
 import com.barkoczi.peter.soccerleaguemanager.entity.Match;
-import com.barkoczi.peter.soccerleaguemanager.model.LeagueDetails;
+import com.barkoczi.peter.soccerleaguemanager.model.league.LeagueDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.LeagueRepository;
 import com.barkoczi.peter.soccerleaguemanager.repository.LocationRepository;
 import com.barkoczi.peter.soccerleaguemanager.service.match.GroupCreator;

@@ -1,4 +1,4 @@
-package com.barkoczi.peter.soccerleaguemanager.model;
+package com.barkoczi.peter.soccerleaguemanager.model.league;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,15 +13,14 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Service
-public class CupDetails {
+public class LeagueDetails {
 
     private String name;
-    private Integer numOfTeams;
-    private List<String> teamList;
+    private List<String> teams;
     private String date;
     private String startTime;
+    private List<String> gameDays;
     private String matchTime;
     private String locationName;
-    private String matchType;
 
 }

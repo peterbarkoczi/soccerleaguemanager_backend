@@ -1,22 +1,21 @@
-package com.barkoczi.peter.soccerleaguemanager.model;
+package com.barkoczi.peter.soccerleaguemanager.model.match;
 
-import com.barkoczi.peter.soccerleaguemanager.entity.Match;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Service
-public class MatchModel {
+public class CardDetails {
 
-    private List<Match> matches;
-    private Long cupId;
+    Long id;
+    String card1;
+    String card2;
+    String type;
 
 }

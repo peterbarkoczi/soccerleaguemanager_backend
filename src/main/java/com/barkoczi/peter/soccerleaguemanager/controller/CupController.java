@@ -1,7 +1,7 @@
 package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Cup;
-import com.barkoczi.peter.soccerleaguemanager.model.CupDetails;
+import com.barkoczi.peter.soccerleaguemanager.model.cup.CupDetails;
 import com.barkoczi.peter.soccerleaguemanager.repository.CupRepository;
 import com.barkoczi.peter.soccerleaguemanager.service.CupService;
 import org.springframework.beans.factory.annotation.Autowired;
