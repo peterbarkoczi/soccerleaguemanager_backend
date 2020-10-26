@@ -29,4 +29,11 @@ public class UserinfoController {
         return "Sikeresen módosítottad az adatokat";
     }
 
+    @DeleteMapping("/delete_user/{userId}")
+    @PreAuthorize("hasRole('admin')")
+    public String deleteUser(@PathVariable("userId") Long userId) {
+        appUserService.deleteUserById(userId);
+        return "Felhasználó törölve";
+    }
+
 }
