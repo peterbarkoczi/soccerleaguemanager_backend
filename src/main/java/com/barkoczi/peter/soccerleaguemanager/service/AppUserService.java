@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,5 +49,14 @@ public class AppUserService {
     public Long getTeamId(String username) {
         Optional<AppUser> user = appUserRepository.findByUsername(username);
         return user.map(AppUser::getTeamId).orElse(null);
+    }
+
+    @Transactional
+    public void updateUser(AppUser user, Long userId) {
+        appUserRepository.updateUserDetails(user.getUsername(), user.getRole(), user.getTeamId(), userId);
+    }
+
+    public void deleteUserById(Long userId) {
+        appUserRepository.deleteById(userId);
     }
 }
