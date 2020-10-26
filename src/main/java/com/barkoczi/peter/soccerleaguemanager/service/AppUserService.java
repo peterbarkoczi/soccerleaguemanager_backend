@@ -43,7 +43,7 @@ public class AppUserService {
     }
 
     public List<AppUser> getAllUser() {
-        return appUserRepository.findAll();
+        return appUserRepository.findAllByOrderByIdAsc();
     }
 
     public Long getTeamId(String username) {
