@@ -27,6 +27,9 @@ public class Player {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
+    
+    private String position;
+    private String foot;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

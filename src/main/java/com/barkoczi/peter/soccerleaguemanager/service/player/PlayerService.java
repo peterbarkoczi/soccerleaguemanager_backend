@@ -46,6 +46,8 @@ public class PlayerService {
                 .name(player.getName())
                 .teams(teams)
                 .birthDate(player.getBirthDate())
+                .position(player.getPosition())
+                .foot(player.getFoot())
                 .build();
 
         playerRepository.saveAndFlush(newPlayer);
