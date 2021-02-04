@@ -25,6 +25,11 @@ public class Location {
     @Column(unique = true)
     private String name;
 
+    private String contactName;
+    private String contactPhone;
+    private String contactMail;
+    private String address;
+
     @Builder.Default
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "location", orphanRemoval = true)
     private List<League> leagues = new ArrayList<>();
