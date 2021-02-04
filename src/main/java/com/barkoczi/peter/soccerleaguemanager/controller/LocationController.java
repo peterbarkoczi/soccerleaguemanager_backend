@@ -1,7 +1,7 @@
 package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.Location;
-import com.barkoczi.peter.soccerleaguemanager.repository.LocationRepository;
+import com.barkoczi.peter.soccerleaguemanager.model.location.LocationContact;
 import com.barkoczi.peter.soccerleaguemanager.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +14,16 @@ import java.util.List;
 public class LocationController {
 
     @Autowired
-    private LocationRepository locationRepository;
-
-    @Autowired
     private LocationService locationService;
 
     @GetMapping("/list")
     public List<Location> leagueList() {
-        return locationRepository.findAll();
+        return locationService.getAllLocation();
+    }
+
+    @GetMapping("/get_location_contact")
+    public LocationContact getLocationContactByName(@RequestParam String locationName) {
+        return locationService.getLocationContactByName(locationName);
     }
 
     @PostMapping("/add_location")

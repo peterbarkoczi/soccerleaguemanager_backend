@@ -36,4 +36,16 @@ public class LocationService {
         locationRepository.delete(locationRepository.findFirstById(id));
     }
 
+    public List<Location> getAllLocation() {
+        return locationRepository.findAllByOrderById();
+    }
+
+    public LocationContact getLocationContactByName(String locationName) {
+        Location tempLocation = locationRepository.findLocationByName(locationName);
+        return LocationContact.builder()
+                .contactName(tempLocation.getContactName())
+                .contactPhone(tempLocation.getContactPhone())
+                .contactMail(tempLocation.getContactMail())
+                .address(tempLocation.getAddress()).build();
+    }
 }
