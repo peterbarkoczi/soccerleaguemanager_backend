@@ -13,5 +13,6 @@ public class SigninCredentials {
 
     private String username;
     private String password;
+    private String locationName;
 
 }
