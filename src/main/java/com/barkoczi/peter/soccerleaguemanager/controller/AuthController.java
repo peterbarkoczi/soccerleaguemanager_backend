@@ -77,8 +77,8 @@ public class AuthController {
     }
 
     @GetMapping("/getUsers")
-    public List<AppUser> getUsers(@RequestParam String locationName) {
-        return appUserService.getAllUserByLocation(locationName);
+    public List<AppUser> getUsers() {
+        return appUserService.getAllUserByLocation();
     }
 
     @PostMapping("/change_role")

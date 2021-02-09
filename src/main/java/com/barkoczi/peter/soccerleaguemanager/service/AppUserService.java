@@ -48,7 +48,7 @@ public class AppUserService {
         appUserRepository.saveAndFlush(tempUser);
     }
 
-    public List<AppUser> getAllUserByLocation(String locationName) {
+    public List<AppUser> getAllUserByLocation() {
         return appUserRepository.findAllByOrderByIdAsc();
 //        return appUserRepository.findAllByLocationOrderByIdAsc(locationService.getLocationByName(locationName));
     }
