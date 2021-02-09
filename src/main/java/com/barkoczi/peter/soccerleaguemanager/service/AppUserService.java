@@ -72,4 +72,9 @@ public class AppUserService {
         if (user.getLocation().getName().equals(locationName)) return locationName;
         throw new UserNotFoundException("User not found in this location");
     }
+
+    @Transactional
+    public void changeRole(SignupCredentials user) {
+        appUserRepository.updateRole(user.getRole(), user.getUsername());
+    }
 }

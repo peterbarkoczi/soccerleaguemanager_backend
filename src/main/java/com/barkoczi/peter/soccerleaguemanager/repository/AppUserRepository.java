@@ -2,6 +2,7 @@ package com.barkoczi.peter.soccerleaguemanager.repository;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.AppUser;
 import com.barkoczi.peter.soccerleaguemanager.entity.Location;
+import com.barkoczi.peter.soccerleaguemanager.model.user.SignupCredentials;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +32,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
                            @Param("teamId") Long teamId,
                            @Param("id") Long id);
 
+    @Modifying(clearAutomatically = true)
+    @Query("update AppUser set role = :role where username = :username")
+    void updateRole(@Param("role") String role, @Param("username") String username);
 }

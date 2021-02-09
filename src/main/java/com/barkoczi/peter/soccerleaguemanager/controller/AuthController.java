@@ -81,4 +81,9 @@ public class AuthController {
         return appUserService.getAllUserByLocation(locationName);
     }
 
+    @PostMapping("/change_role")
+    public void changeRole(@RequestBody SignupCredentials user) {
+        appUserService.changeRole(user);
+    }
+
 }
