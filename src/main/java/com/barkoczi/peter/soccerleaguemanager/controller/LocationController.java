@@ -31,7 +31,7 @@ public class LocationController {
         return locationService.createAndSaveNewLocation(location);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public String deleteLocation(@PathVariable("id") Long id) {
         locationService.deleteLocation(id);
         return "Location deleted";

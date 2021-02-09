@@ -42,7 +42,7 @@ public class CupController {
         return cupRepository.findCupByName(cupName);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public String deleteCup(@PathVariable("id") Long id) {
         cupService.deleteCup(id);
         return "Cup deleted";
