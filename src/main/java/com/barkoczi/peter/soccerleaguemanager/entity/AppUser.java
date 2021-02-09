@@ -1,9 +1,7 @@
 package com.barkoczi.peter.soccerleaguemanager.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,4 +30,11 @@ public class AppUser {
 
     private String role;
     private Long teamId;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<Location> locations;
+
 }

@@ -37,4 +37,10 @@ public class LocationController {
         return "Location deleted";
     }
 
+    @PatchMapping("/edit_contact")
+    public String editContacts(@RequestBody LocationContact contact) {
+        locationService.editContact(contact);
+        return "Contact edited successfully";
+    }
+
 }

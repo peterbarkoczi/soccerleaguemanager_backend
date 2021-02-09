@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LocationContact {
 
+    private Long locationId;
     private String contactName;
     private String contactPhone;
     private String contactMail;
