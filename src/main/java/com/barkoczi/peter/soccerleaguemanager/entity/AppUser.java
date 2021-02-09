@@ -2,6 +2,8 @@ package com.barkoczi.peter.soccerleaguemanager.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,7 +24,6 @@ public class AppUser {
     private Long id;
 
     @NotEmpty
-    @Column(unique = true)
     private String username;
 
     @NotEmpty
@@ -34,7 +35,9 @@ public class AppUser {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    private List<Location> locations;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotEmpty
+    private Location location;
 
 }
