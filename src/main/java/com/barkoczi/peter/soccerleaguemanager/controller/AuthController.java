@@ -1,6 +1,7 @@
 package com.barkoczi.peter.soccerleaguemanager.controller;
 
 import com.barkoczi.peter.soccerleaguemanager.entity.AppUser;
+import com.barkoczi.peter.soccerleaguemanager.exception.UserNotFoundException;
 import com.barkoczi.peter.soccerleaguemanager.model.user.SigninCredentials;
 import com.barkoczi.peter.soccerleaguemanager.model.user.SignupCredentials;
 import com.barkoczi.peter.soccerleaguemanager.repository.AppUserRepository;
@@ -51,14 +52,16 @@ public class AuthController {
 
             String token = jwtTokenServices.createToken(username, roles);
             Long teamId = appUserService.getTeamId(username);
+            String location = appUserService.checkLocation(username, data.getLocationName());
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("roles", roles);
             model.put("token", token);
             model.put("teamId", teamId);
+            model.put("locationName", location);
             return ResponseEntity.ok(model);
-        } catch (AuthenticationException e) {
+        } catch (AuthenticationException | UserNotFoundException e) {
 //            throw new BadCredentialsException("Invalid username/password supplied");
             return ResponseEntity.badRequest().body("Hibás felhasználónév vagy jelszó");
         }
@@ -66,7 +69,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupCredentials credentials) {
-        if (appUserService.isUserExists(credentials.getUsername())) {
+        if (appUserService.isUserExists(credentials.getUsername(), credentials.getLocationName())) {
             return ResponseEntity.badRequest().body("Ez a felhasználónév már létezik");
         }
         appUserService.createAndSaveNewAppUser(credentials);
@@ -74,8 +77,8 @@ public class AuthController {
     }
 
     @GetMapping("/getUsers")
-    public List<AppUser> getUsers() {
-        return appUserService.getAllUser();
+    public List<AppUser> getUsers(@RequestParam String locationName) {
+        return appUserService.getAllUserByLocation(locationName);
     }
 
 }
