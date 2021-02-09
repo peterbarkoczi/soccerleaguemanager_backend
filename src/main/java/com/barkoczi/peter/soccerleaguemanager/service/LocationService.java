@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,9 +50,20 @@ public class LocationService {
     public LocationContact getLocationContactByName(String locationName) {
         Location tempLocation = locationRepository.findLocationByName(locationName);
         return LocationContact.builder()
+                .locationId(tempLocation.getId())
                 .contactName(tempLocation.getContactName())
                 .contactPhone(tempLocation.getContactPhone())
                 .contactMail(tempLocation.getContactMail())
                 .address(tempLocation.getAddress()).build();
+    }
+
+    @Transactional
+    public void editContact(LocationContact contact) {
+        locationRepository.updateContact(
+                contact.getAddress(),
+                contact.getContactName(),
+                contact.getContactPhone(),
+                contact.getContactMail(),
+                contact.getLocationId());
     }
 }

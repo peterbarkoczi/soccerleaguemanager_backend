@@ -30,7 +30,7 @@ public class LeagueController {
         return leagueService.createAndSaveNewLeague(leagueDetails);
     }
 
-    @DeleteMapping(value = "/{leagueId}")
+    @DeleteMapping(value = "/delete/{leagueId}")
     public String deleteLeague(@PathVariable("leagueId") Long leagueId) {
         leagueService.deleteLeague(leagueId);
         return "League deleted";

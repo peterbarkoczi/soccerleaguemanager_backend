@@ -31,10 +31,16 @@ public class LocationController {
         return locationService.createAndSaveNewLocation(location);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public String deleteLocation(@PathVariable("id") Long id) {
         locationService.deleteLocation(id);
         return "Location deleted";
+    }
+
+    @PatchMapping("/edit_contact")
+    public String editContacts(@RequestBody LocationContact contact) {
+        locationService.editContact(contact);
+        return "Contact edited successfully";
     }
 
 }

@@ -41,7 +41,7 @@ public class TeamController {
         return teamService.addTeam(teamDetails);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public String deleteCup(@PathVariable("id") Long id) {
         teamService.deleteTeam(id);
         return "Team deleted";
