@@ -44,14 +44,8 @@ public class Location {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "location", orphanRemoval = true)
     private List<News> news = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "locations")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "location", orphanRemoval = true)
     private List<AppUser> users;
 
-    @PreRemove
-    private void removeUserFromLocations() {
-        for (AppUser user : users) {
-            user.getLocations().remove(this);
-        }
-    }
 
 }

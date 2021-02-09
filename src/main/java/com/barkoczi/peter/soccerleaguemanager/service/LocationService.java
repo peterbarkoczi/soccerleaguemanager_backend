@@ -57,6 +57,10 @@ public class LocationService {
                 .address(tempLocation.getAddress()).build();
     }
 
+    public Location getLocationByName(String locationName) {
+        return locationRepository.findLocationByName(locationName);
+    }
+
     @Transactional
     public void editContact(LocationContact contact) {
         locationRepository.updateContact(
